@@ -23,3 +23,6 @@ __pycache__/
 build/seg30v2/
 build/render30v2.log
 build/qc30v2/
+build/seg30v3/
+build/render30v3.log
+build/qc30v3/
