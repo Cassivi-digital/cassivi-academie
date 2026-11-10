@@ -45,8 +45,8 @@ def build(C, total):
     put(blip(2000, .13, .22), C['r1']); put(blip(2500, .13, .22), C['r1'] + .55)
     # 2 JOURS · 1 MÉTIER · 1 MOIS DE SUIVI
     wh(C['k0'] - .3, .6, f0=150, f1=4500, gain=.4, pan0=0, pan1=0); put(subdrop(.4, 1.4), C['k0'] - .2)
-    for i in range(3): put(impact([.8, .85, 1.0][i], [50, 46, 42][i], 1.8, .55, .3), C['k0'] + i * .5)
-    put(shimmer(.22, 1318, 1.6), C['k0'] + 1.0); put(blip(1800, .1, .2), C['k0'] + 1.5)
+    for i in range(3): put(impact([.8, .85, 1.0][i], [50, 46, 42][i], 1.8, .55, .3), C['k0'] - .05 + i * .36)
+    put(shimmer(.22, 1318, 1.6), C['k0'] + .67); put(blip(1800, .1, .2), C['k0'] + 1.0)
     # urgence + CTA
     put(impact(.95, 42, 2.4, .55, .35), C['u0']); put(riser(C['g0'] - C['u0'] + .05, .26), C['u0'] + .15)
     put(impact(1.0, 40, 3.0, .6, .4), C['g0'] - .05); put(shimmer(.3, 1046, 3.0), C['g0']); put(subdrop(.45, 2.0), C['g0'] - .05)

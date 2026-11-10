@@ -345,8 +345,8 @@ function renderS8(t){
   const on=t>C.s8-.3&&t<C.s9+.05;vis(s8,on);if(!on)return;
   const pw=E.ioQuint(P(t,C.s8-.25,.35));s8.style.clipPath=pw<1?`inset(${(1-pw)*100}% 0 0 0)`:'none';
   tf(s8strip,{x:-((t-C.s8)*180)%(W*1.65)});
-  punch.forEach((e,i)=>{const a=C.k0+i*.5;const p=E.oExpo(P(t,a,.4));tf(e,{s:L(1.6,1,p),o:cl(p*2)})});
-  const pr=E.oExpo(P(t,C.k0+1.5,.45));tf(s8req,{o:pr,y:(1-pr)*30});
+  punch.forEach((e,i)=>{const a=C.k0-.05+i*.36;const p=E.oExpo(P(t,a,.32));tf(e,{s:L(1.35,1,p),o:cl(p*2.2)})});
+  const pr=E.oExpo(P(t,C.k0+1.0,.4));tf(s8req,{o:pr,y:(1-pr)*30});
 }
 
 /* ============ SCÈNE 9 — urgence + CTA WhatsApp ============ */
