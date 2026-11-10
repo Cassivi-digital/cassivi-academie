@@ -277,7 +277,7 @@ const who=whoDef.map(([txt,img,pos,cue],i)=>{let x,y,w,h;if(WIDE){w=W/3;h=H;x=i*
   const lb=el(c,'a h',WIDE?`left:30px;top:${h*.66}px;width:${w-60}px;text-align:center;color:#fff;white-space:nowrap;font-size:${fsz}px`:`left:${BOX.x}px;top:${h/2-fsz/2+(i===0&&TALL?60:0)+(i===2&&TALL?-40:0)}px;width:${BOX.w}px;text-align:${i===1?'right':'left'};color:#fff;font-size:${fsz}px;white-space:nowrap`,txt);
   const bar=el(c,'a',WIDE?`left:${w/2-60}px;top:${h*.66-30}px;width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,#1E5BFF,#14C0E6)`:`left:${i===1?BOX.x+BOX.w-120:BOX.x}px;top:${h/2-fsz/2-30+(i===0&&TALL?60:0)+(i===2&&TALL?-40:0)}px;width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,#1E5BFF,#14C0E6)`);
   return {c,p,lb,bar,cue,w,h}});
-const stamp=el(s6,'a',`left:0;top:${CY-70}px;width:${W}px;display:flex;justify-content:center`);
+const stamp=el(s6,'a',`left:0;top:${WIDE?CY-70:H/3-64}px;width:${W}px;display:flex;justify-content:center`);
 const stampI=el(stamp,'',`display:inline-block;background:#fff;color:#0A1B3F;font-family:Mont;font-weight:900;font-size:${Math.round((TALL?84:WIDE?84:SQ?66:76))}px;padding:22px 52px;border-radius:999px;white-space:nowrap;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)`,'C’EST POUR <span class="grad">TOI.</span>');
 function renderS6(t){
   const on=t>C.s6-.02&&t<C.s7+.05;vis(s6,on);if(!on)return;
