@@ -28,6 +28,12 @@ Concept : hook « méta » (la pub elle-même, révélée dans le gestionnaire d
 
 Rejouer : `python3 src/voice30_edit.py && python3 src/sfx30.py build/cues30.json audio/sfx30.wav <durée> && src/render30_all.sh`.
 
+## Version courte v2 avec l'offre (`export/version_30s_v2/`, 38 s)
+
+Hook méta → MEDIA BUYER → logos Meta Ads / Google Ads → stack tracking (GA4, Tag Manager, Search Console, Pixel Meta, API Conversions) → acquisition client incluse (suivi 1 mois) → pour qui (e-commerçant, entrepreneur, futur freelance) → 2 jours en salle à Antsakaviro, sam. 21 & lun. 23 nov., 8h–17h → 350 000 Ar, acompte 50 000 Ar, prérequis (ordinateur portable, carte Visa activable sur place) → urgence + CTA WhatsApp/QR. Formats 9:16, 4:5, 1:1, 16:9. Logos : tracés Simple Icons (CC0), marques de leurs propriétaires.
+
+Rejouer : `python3 src/voice30v2_edit.py && python3 src/sfx30v2.py build/cues30v2.json audio/sfx30v2.wav <durée> && src/render30v2_all.sh` avec, entre les deux, `src/mix30.sh build/cues30v2.json audio/voice30v2_edit.wav audio/music30v2_edit.wav audio/sfx30v2.wav audio/mix30v2_final.wav`.
+
 ## Structure narrative (AIDA)
 
 | Temps | Scène | Rôle |
