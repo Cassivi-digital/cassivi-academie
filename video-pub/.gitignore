@@ -1,0 +1,17 @@
+# intermédiaires de production (régénérables)
+build/seg/
+build/prev_*/
+build/*.png
+build/*.wav
+build/*.mp4
+build/*.html
+build/*.js
+!build/img/
+!build/cues.json
+!build/subs.json
+!build/align.json
+audio/*.wav
+!audio/music_raw.wav
+build/qc/
+build/mont.css
+build/render.log

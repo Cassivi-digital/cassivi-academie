@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Mont;src:url(../assets/fonts/Montserrat-latin.woff2) format('woff2');font-weight:100 900}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#fff;font-family:Inter,sans-serif;color:#0A1B3F;-webkit-font-smoothing:antialiased}
+.a{position:absolute}
+.grad{background:linear-gradient(92deg,#1E5BFF,#2F7BFF 45%,#14C0E6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.label{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:22px;letter-spacing:.24em;color:#1E5BFF;display:flex;align-items:center;gap:16px}
+.label:before{content:"";width:40px;height:3px;background:linear-gradient(90deg,#1E5BFF,#14C0E6);border-radius:2px}
+.li{display:flex;align-items:center;gap:16px;font-size:27px;font-weight:600;margin-bottom:16px}
+.ck{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1E5BFF,#14C0E6);display:flex;align-items:center;justify-content:center;flex:none}
+</style><script src="qr_data.js"></script></head>
+<body>
+<div class="a" style="inset:0;background:radial-gradient(ellipse at 30% 40%,#fff 50%,#EEF3FB 100%)"></div>
+<div class="a" style="inset:0;background-image:radial-gradient(rgba(10,27,63,.09) 1.6px,transparent 1.8px);background-size:40px 40px"></div>
+<div class="a" style="left:1080px;top:-200px;width:1100px;height:1100px;border-radius:50%;background:radial-gradient(circle,rgba(30,91,255,.12),rgba(30,91,255,0) 65%)"></div>
+<!-- anneau décoratif autour de l'emplacement vidéo (rappel du logo) -->
+<svg class="a" style="left:1100px;top:0" width="820" height="1080"><circle cx="410" cy="540" r="470" fill="none" stroke="#E4EAF4" stroke-width="2"/><path d="M 30 540 A 380 380 0 0 1 560 190" fill="none" stroke="#C9A45C" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg>
+
+<div class="a" style="left:120px;top:96px;display:flex;align-items:center;gap:26px">
+  <div style="width:120px;height:120px;border-radius:50%;background:url(../build/img/logo_badge.png) center/cover;box-shadow:0 18px 40px -14px rgba(10,27,63,.5)"></div>
+  <div class="" style="font-family:Mont;font-weight:800;font-size:34px;letter-spacing:.08em">CASSIVI DIGITAL MG<div style="font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.3em;color:#C9A45C;margin-top:8px;font-weight:600">ORGANISME DE FORMATION</div></div>
+</div>
+<div class="a label" style="left:120px;top:290px">INSCRIPTIONS OUVERTES</div>
+<div class="a" style="left:120px;top:332px;width:960px;font-family:Mont;font-weight:900;font-size:76px;line-height:1.02;letter-spacing:-.02em">Formation<br><span class="grad">Media Buyer Freelance</span></div>
+<div class="a" style="left:120px;top:512px;width:900px;font-size:30px;font-weight:500;color:#5C6B86;line-height:1.35">Transforme une compétence digitale en opportunité professionnelle.</div>
+<div class="a" style="left:120px;top:610px;width:960px;display:grid;grid-template-columns:1fr 1fr;column-gap:30px">
+  <div class="li"><span class="ck" id="c1"></span>Meta Ads & Google Ads</div>
+  <div class="li"><span class="ck"></span>Tracking, Pixel & GA4</div>
+  <div class="li"><span class="ck"></span>Analyse & optimisation</div>
+  <div class="li"><span class="ck"></span>Préparation au freelance</div>
+</div>
+<div class="a" style="left:120px;top:770px;width:940px;height:200px;border-radius:28px;background:#fff;box-shadow:0 30px 70px -28px rgba(10,27,63,.3),0 0 0 1.5px rgba(10,27,63,.06);display:flex;align-items:center;gap:34px;padding:0 30px">
+  <div style="width:150px;height:150px;flex:none"><svg width="150" height="150" id="qr"></svg></div>
+  <div style="flex:1">
+    <div style="display:flex;align-items:center;gap:12px;font-size:26px;font-weight:700"><span id="wa" style="width:44px;height:44px;display:inline-block"></span>Réserve ta place sur WhatsApp</div>
+    <div style="font-family:Mont;font-weight:900;font-size:56px;margin-top:6px">037 59 755 12</div>
+  </div>
+  <div style="width:250px;text-align:right;font-size:22px;font-weight:600;color:#5C6B86;line-height:1.5">Antsakaviro<br><span style="color:#C9A45C">●</span> Places très limitées<br>Réservation obligatoire</div>
+</div>
+<script>
+document.getElementById('qr').outerHTML=`<svg width="150" height="150" viewBox="0 0 ${QR.n} ${QR.n}" shape-rendering="crispEdges"><path fill="#0A1B3F" d="${QR.d}"/></svg>`;
+document.getElementById('wa').innerHTML='<svg viewBox="0 0 32 32" width="44" height="44"><path fill="#fff" d="M16 3.2A12.7 12.7 0 005.1 22.4L3.4 28.6l6.4-1.7A12.7 12.7 0 1016 3.2z"/><path fill="#25D366" d="M16 5.4a10.5 10.5 0 00-8.9 16.1l.25.4-1 3.7 3.8-1 .38.23A10.5 10.5 0 1016 5.4z"/><path fill="#fff" d="M12.3 10.1c-.24-.53-.49-.54-.72-.55h-.61a1.2 1.2 0 00-.85.4 3.6 3.6 0 00-1.12 2.66 6.2 6.2 0 001.31 3.31 13.2 13.2 0 005.48 4.84c2.72 1.07 3.27.86 3.86.8a3.2 3.2 0 002.17-1.53 2.7 2.7 0 00.19-1.53c-.08-.13-.29-.21-.61-.37s-1.9-.94-2.19-1.04-.51-.16-.72.16-.83 1.04-1.01 1.25-.37.24-.69.08a8.7 8.7 0 01-2.57-1.59 9.6 9.6 0 01-1.78-2.21c-.19-.32 0-.49.14-.65s.32-.37.48-.56a2.2 2.2 0 00.32-.53.59.59 0 000-.56c-.08-.16-.7-1.75-.98-2.38z"/></svg>';
+const chk='<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+document.querySelectorAll('.ck').forEach(e=>e.innerHTML=chk);
+document.fonts.ready.then(()=>window.READY=true);
+</script>
+</body></html>
