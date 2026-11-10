@@ -22,3 +22,4 @@ build/render30.log
 __pycache__/
 build/seg30v2/
 build/render30v2.log
+build/qc30v2/
