@@ -13,6 +13,21 @@ Vidéo publicitaire en motion design, entièrement générée par code (rendu im
 | `CASSIVI_MediaBuyer_sous-titres.srt` | SRT | Sous-titres (lecture sans le son) |
 | `logo_cassivi_corrige.png` | 1024×1024 | Logo avec l'orthographe corrigée (CASSIVI, 2 S) |
 
+## Version courte 30 s (`export/version_30s/`)
+
+Une seule animation responsive (`src/pub30.html?w=…&h=…`), mise en page native pour chaque format :
+
+| Fichier | Format | Plateformes |
+|---|---|---|
+| `CASSIVI_MediaBuyer_30s_9x16.mp4` | 1080×1920 | Reels, TikTok, Shorts, Stories, Statut WhatsApp |
+| `CASSIVI_MediaBuyer_30s_4x5.mp4` | 1080×1350 | Fil Instagram / Facebook, LinkedIn mobile |
+| `CASSIVI_MediaBuyer_30s_1x1.mp4` | 1080×1080 | Fil LinkedIn / Facebook |
+| `CASSIVI_MediaBuyer_30s_16x9.mp4` | 1920×1080 | LinkedIn ordinateur, YouTube, Facebook in-stream |
+
+Concept : hook « méta » (la pub elle-même, révélée dans le gestionnaire de publicités qui la pilote), drop musical sur « MEDIA BUYER », rafale de compétences sur photos réelles, calcul freelance (exemple illustratif), vraies sessions en salle, urgence, CTA WhatsApp + QR. Textes de publication prêts dans `TEXTES_PUBLICATION.md`.
+
+Rejouer : `python3 src/voice30_edit.py && python3 src/sfx30.py build/cues30.json audio/sfx30.wav <durée> && src/render30_all.sh`.
+
 ## Structure narrative (AIDA)
 
 | Temps | Scène | Rôle |

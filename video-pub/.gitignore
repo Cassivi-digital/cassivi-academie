@@ -15,3 +15,7 @@ audio/*.wav
 build/qc/
 build/mont.css
 build/render.log
+build/seg30/
+build/prev30_*/
+build/qc30/
+build/render30.log
