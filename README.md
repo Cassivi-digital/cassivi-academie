@@ -39,6 +39,10 @@ déployé, et aucune confirmation n'est affichée sans réponse réelle de Netli
 
 ## Déploiement sur Netlify
 
+Deux façons de mettre le site en ligne : depuis GitHub (étapes 1 à 6) ou en déposant le dossier
+construit (voir « Déploiement manuel » plus bas). Les étapes 2 à 4, qui concernent le formulaire,
+valent dans les deux cas.
+
 ### 1. Créer le site
 
 1. Sur [app.netlify.com](https://app.netlify.com) : **Add new project > Import an existing project**.
@@ -73,17 +77,48 @@ prospect.
 
 ### 5. Adresse du site
 
-L'adresse canonique, les balises Open Graph, `sitemap.xml` et `robots.txt` utilisent l'adresse
-principale du site, fournie par Netlify au moment du build. Après un changement de nom ou l'ajout
-d'un domaine (**Domain management**), il suffit de relancer un déploiement.
+L'adresse canonique, les balises Open Graph, `sitemap.xml` et `robots.txt` contiennent l'adresse du
+site. Elle est choisie ainsi au moment du build :
 
-Pour un autre hébergeur, définir la variable d'environnement `SITE_URL` avant le build.
+1. la variable `SITE_URL`, si elle est définie ;
+2. sinon l'adresse principale fournie par Netlify, quand c'est Netlify qui construit le site ;
+3. sinon la valeur par défaut de `vite.config.ts` : `https://portfolio-sitraka-growth.netlify.app`.
+
+Avec un déploiement depuis GitHub, un changement de nom ou l'ajout d'un domaine
+(**Domain management**) ne demande donc qu'un nouveau déploiement.
 
 ### 6. Après la mise en ligne
 
 - **LinkedIn** : passer l'adresse dans le [Post Inspector](https://www.linkedin.com/post-inspector/)
   pour générer l'aperçu du lien.
 - **Google** : déclarer le site dans la Search Console et y soumettre `/sitemap.xml`.
+
+### Déploiement manuel (glisser-déposer)
+
+Sans GitHub : Netlify publie le dossier construit tel quel, il ne lance aucun build.
+
+1. Construire le site avec le nom qu'il portera sur Netlify :
+
+   ```bash
+   SITE_URL=https://portfolio-sitraka-growth.netlify.app npm run build
+   ```
+
+2. Se connecter à Netlify, ouvrir [app.netlify.com/drop](https://app.netlify.com/drop) et y déposer
+   le dossier `dist` (ou un zip de son contenu, `index.html` à la racine).
+3. Renommer le projet dans ses réglages généraux pour qu'il porte exactement le nom utilisé à
+   l'étape 1. Si ce nom est déjà pris, en choisir un autre et reconstruire avec la bonne adresse.
+4. Activer le formulaire (étape 2 ci-dessus), puis **déposer une seconde fois le même dossier** dans
+   la zone de dépôt de l'onglet **Deploys** : Netlify n'enregistre le formulaire que lors d'un
+   déploiement postérieur à l'activation.
+5. Configurer les notifications et tester (étapes 3 et 4 ci-dessus).
+
+Pour une mise à jour : reconstruire, puis déposer de nouveau le dossier dans l'onglet **Deploys**.
+
+Les en-têtes de cache et de sécurité sont dans `public/_headers`, copié dans `dist` : ils
+s'appliquent aussi en déploiement manuel, où `netlify.toml` n'est pas lu.
+
+Si le site demande une connexion aux visiteurs, vérifier la visibilité du projet dans Netlify :
+selon la formule, un projet déposé peut être privé par défaut.
 
 ## Modifier le contenu
 
@@ -108,9 +143,9 @@ champ absent de `index.html`, et le build le signale.
 
 ```
 index.html                 balises SEO, données structurées, déclaration du formulaire Netlify
-netlify.toml               build, cache et en-têtes de sécurité
+netlify.toml               réglages de build pour un déploiement depuis GitHub
 scripts/prerender.mjs      pré-rendu HTML, sitemap, robots, contrôle du formulaire
-public/                    favicon, image de partage, page 404
+public/                    favicon, image de partage, page 404, en-têtes HTTP (_headers)
 src/
   data/                    tout le contenu et les chiffres
   lib/                     formatage des nombres, validation et envoi du formulaire

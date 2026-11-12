@@ -7,14 +7,15 @@ import tailwindcss from '@tailwindcss/vite';
  * les données structurées, le sitemap et robots.txt.
  *
  * Ordre de priorité :
- *  1. SITE_URL  — à définir soi-même (domaine personnalisé, autre hébergeur)
- *  2. URL       — fournie automatiquement par Netlify pendant le build
- *  3. valeur par défaut ci-dessous
+ *  1. SITE_URL  — à définir soi-même (autre nom de site, domaine personnalisé)
+ *  2. URL       — fournie automatiquement par Netlify quand il construit le site
+ *  3. valeur par défaut ci-dessous, utilisée pour un build local destiné à un
+ *     dépôt manuel : elle doit correspondre au nom du site sur Netlify
  */
 const siteUrl = (
   process.env.SITE_URL ||
   process.env.URL ||
-  'https://sitraka-ramamonjisoa.netlify.app'
+  'https://portfolio-sitraka-growth.netlify.app'
 ).replace(/\/+$/, '');
 
 function injectSiteUrl(): Plugin {
