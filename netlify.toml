@@ -1,0 +1,35 @@
+# Configuration Netlify — portfolio PPC de Sitraka Ramamonjisoa
+#
+# Le formulaire « devis » repose sur Netlify Forms. Deux réglages se font
+# dans l'interface Netlify et ne peuvent pas être placés dans ce fichier :
+#   1. Forms > Enable form detection           (puis relancer un déploiement)
+#   2. Forms > Submission notifications > Add notification > Email notification
+# Voir le README, section « Déploiement sur Netlify ».
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Fichiers versionnés par empreinte (JS, CSS, images, polices) : cache long.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# La page HTML doit toujours être revalidée pour servir la dernière version.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
