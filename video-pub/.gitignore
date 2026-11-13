@@ -37,3 +37,6 @@ export/**/*.zip
 build/seg_ia/
 build/render_ia.log
 build/qc_ia/
+build/seg_final/
+build/render_final.log
+build/qc_final/
