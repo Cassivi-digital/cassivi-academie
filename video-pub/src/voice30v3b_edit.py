@@ -1,8 +1,9 @@
 import subprocess, numpy as np, json, wave
 import sys
 SR=48000; TEMPO=1.12; LEAD=0.05; HOLD=2.4; PUNCH=2.9
-# v3b : respiration avant le CTA (silence entre « Places très limitées ! » et « Réserve ta place… »)
-BREATH=float(sys.argv[1]) if len(sys.argv)>1 else 1.25
+# v3b : respiration courte avant le CTA (silence entre « Places très limitées ! » et « Réserve ta place… »),
+# calée pour que l'impact du CTA tombe sur le temps fort de la mesure
+BREATH=float(sys.argv[1]) if len(sys.argv)>1 else 0.70
 x=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i','audio/voice30v3_raw.mp3','-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout,np.float32).copy()
 # (début, fin, texte, cue, silence avant, cues internes {nom: fraction du segment})
 S=[(0,1.35,'Cette pub que tu regardes…','a0',0,{}),(1.7,3.23,'quelqu’un est payé pour la piloter.','a1',.14,{}),

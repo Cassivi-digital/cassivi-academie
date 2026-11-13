@@ -33,3 +33,4 @@ build/seg_v3b/
 build/render_v3b.log
 build/qc_v3b/
 build/prev30_err_*.txt
+export/**/*.zip

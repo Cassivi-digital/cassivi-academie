@@ -49,8 +49,8 @@ def build(C, total):
     put(shimmer(.22, 1318, 1.6), C['k0'] + .67); put(blip(1800, .1, .2), C['k0'] + 1.0)
     # urgence + CTA
     put(impact(.95, 42, 2.4, .55, .35), C['u0']); put(riser(C['g0'] - C['u0'] + .05, .34), C['u0'] + .15)
-    # respiration avant le CTA : le badge s'efface dans un souffle léger, la montée continue jusqu'au CTA
-    wh(C['u0'] + 1.2, .5, f0=2500, f1=400, gain=.12, pan0=0, pan1=0)
+    # respiration courte avant le CTA : le badge s'efface dans un souffle léger, la montée continue jusqu'au CTA
+    wh(C['g0'] - .3, .45, f0=2500, f1=400, gain=.12, pan0=0, pan1=0)
     put(impact(1.0, 40, 3.0, .6, .4), C['g0'] - .05); put(shimmer(.3, 1046, 3.0), C['g0']); put(subdrop(.45, 2.0), C['g0'] - .05)
     put(blip(2600, .15, .25), C['g0'] + .05)
     for k in range(18): put(tick(.035), C['g0'] + .8 + k * .062)

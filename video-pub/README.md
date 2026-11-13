@@ -34,11 +34,11 @@ Hook méta → MEDIA BUYER → logos Meta Ads / Google Ads → stack tracking (G
 
 Rejouer : `python3 src/voice30v2_edit.py && python3 src/sfx30v2.py build/cues30v2.json audio/sfx30v2.wav <durée> && src/render30v2_all.sh` avec, entre les deux, `src/mix30.sh build/cues30v2.json audio/voice30v2_edit.wav audio/music30v2_edit.wav audio/sfx30v2.wav audio/mix30v2_final.wav`.
 
-## Version v3 sans date (`export/version_v3_sans_date/`, 40 s)
+## Version v3 sans date (`export/version_v3_sans_date/`, 39,8 s)
 
 C'est la v3, avec seulement deux modifications.
 1. **Date retirée** : à l'écran, dans la voix (phrase coupée au montage) et dans les sous-titres. Les horaires 8h–17h sont conservés.
-2. **Silence optimisé avant le CTA** : environ 1 s de respiration après « Places très limitées ! ». Le badge s'efface, l'écran blanc reste dégagé, la musique passe en sourdine (filtre passe-bas, −6 dB) avec une montée douce. Le CTA arrive ensuite sur le temps de la musique.
+2. **Silence optimisé avant le CTA** : une respiration courte après « Places très limitées ! ». Le badge s'efface, la musique passe un instant en sourdine (filtre passe-bas, −6 dB) et le CTA arrive sur le temps fort de la mesure. Le blanc pur ne dure qu'environ 0,1 s.
 
 Formats : 9:16, 4:5, 1:1, 16:9, plus une version WhatsApp légère. Le rendu est en qualité maximale : captures PNG sans perte, puis intermédiaire RGB sans perte, puis un seul encodage H.264 (CRF 12, BT.709) avec un son AAC 320 kb/s.
 
@@ -50,7 +50,9 @@ python3 src/sfx30v3b.py build/cues30v3b.json audio/sfx30v3b.wav <durée>
 src/mix30.sh build/cues30v3b.json audio/voice30v3b_edit.wav audio/music30v3b_edit.wav audio/sfx30v3b.wav audio/mix30v3b_final.wav
 src/render_v3b_all.sh
 python3 src/qc_v3b.py
+python3 src/package_zip.py export/version_v3_sans_date CASSIVI_MediaBuyer_v3_sans-date CASSIVI_MediaBuyer_v3_sans-date "CASSIVI DIGITAL MG — Formation Media Buyer — v3 sans date"
 ```
+Le ZIP (non versionné) contient les fichiers renommés par plateforme et un LISEZ-MOI.
 
 ## Structure narrative (AIDA)
 

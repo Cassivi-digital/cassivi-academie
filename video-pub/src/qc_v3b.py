@@ -18,7 +18,7 @@ for n,(w,h) in FMT.items():
     f=P+n+'.mp4'
     pr=json.loads(subprocess.run(['ffprobe','-v','error','-show_streams','-show_format','-of','json',f],capture_output=True,text=True).stdout)
     v=[s for s in pr['streams'] if s['codec_type']=='video'][0]; a=[s for s in pr['streams'] if s['codec_type']=='audio'][0]
-    img=cv2.cvtColor(frame(f,40.0,w,h,'bt709'),cv2.COLOR_RGB2BGR)
+    img=cv2.cvtColor(frame(f,float(pr['format']['duration'])-.25,w,h,'bt709'),cv2.COLOR_RGB2BGR)
     qr=cv2.QRCodeDetector().detectAndDecode(img)[0]
     s=[psnr(frame(f,t+1/60,w,h,'bt709'),frame(V3+n+'.mp4',t+1/60,w,h,'bt601')) for t in SAME]
     c=[psnr(frame(f,t+1/60,w,h,'bt709'),frame(V3+n+'.mp4',t+1/60,w,h,'bt601')) for t in CHG]

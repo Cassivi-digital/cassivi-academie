@@ -382,7 +382,7 @@ el(urg,'mono',`font-size:${Math.round(30*FS)}px;letter-spacing:.24em;font-weight
 function renderS9(t){
   const on=t>C.s9-.25;vis(s9,on);if(!on)return;
   const pin=E.oExpo(P(t,C.s9-.2,.5));tf(s9,{s:L(1.08,1,pin),o:pin});
-  const pu=E.oBack(P(t,C.u0,.4)),po=E.iCub(P(t,C.u0+1.05,.35));const beat=1+.04*Math.max(0,Math.sin((t-C.u0)*Math.PI*4));tf(urg,{s:L(.3,1,pu)*beat*L(1,.6,po),o:cl(pu*2)*(1-po)});
+  const pu=E.oBack(P(t,C.u0,.4)),po=E.iCub(P(t,C.g0-.45,.3));const beat=1+.04*Math.max(0,Math.sin((t-C.u0)*Math.PI*4));tf(urg,{s:L(.3,1,pu)*beat*L(1,.6,po),o:cl(pu*2)*(1-po)});
   const g=C.g0;
   tf(s9brand,{o:E.oCub(P(t,g,.4)),y:(1-E.oCub(P(t,g,.4)))*-20});
   const pw=E.oBack(P(t,g-.02,.5));const wb=1+.05*Math.max(0,Math.sin((t-g)*Math.PI*2))*P(t,g+.8,.3);tf(s9wa,{s:L(.2,1,pw)*wb,r:L(-25,0,E.oExpo(P(t,g,.6))),o:cl(pw*2)});
