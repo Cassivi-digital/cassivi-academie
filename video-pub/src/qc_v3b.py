@@ -5,13 +5,14 @@
 import subprocess, json, numpy as np, cv2, sys
 D='export/version_v3_sans_date'; P=D+'/CASSIVI_MediaBuyer_v3_sans-date_'; V3='export/version_30s_v3/CASSIVI_MediaBuyer_v3_'
 FMT={'9x16':(1080,1920),'4x5':(1080,1350),'1x1':(1080,1080),'16x9':(1920,1080)}
+if len(sys.argv)>1: FMT={k:v for k,v in FMT.items() if k in sys.argv[1:]}
 def frame(path,t,w,h,matrix):
     raw=subprocess.run(['ffmpeg','-v','error','-ss',f'{t:.4f}','-i',path,'-frames:v','1','-vf',f'scale=in_color_matrix={matrix}:in_range=tv,format=rgb24','-f','rawvideo','-'],capture_output=True).stdout
     return np.frombuffer(raw,np.uint8).reshape(h,w,3)
 def psnr(a,b):
     m=np.mean((a.astype(float)-b.astype(float))**2); return 99.0 if m==0 else 10*np.log10(255**2/m)
-SAME=[0.5,3.0,6.0,10.0,13.0,17.0,21.0,24.5,26.0]   # avant la première modification (pastille horaires à 26,43 s)
-CHG=[27.0,31.9]                                      # après : doit différer (scène raccourcie, respiration)
+SAME=[0.5,3.0,6.0,10.0,13.0,17.0,21.0,24.5,25.7]   # 0 → 25,79 s : identique à la v3 (avant la 2e photo de la scène en salle)
+CHG=[26.0,27.0,33.0]                                 # après : diffère volontairement (scène en salle raccourcie, respiration, CTA décalé)
 ok=True
 for n,(w,h) in FMT.items():
     f=P+n+'.mp4'
