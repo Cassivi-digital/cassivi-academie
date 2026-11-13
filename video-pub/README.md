@@ -78,6 +78,32 @@ python3 src/qc_ia.py
 python3 src/package_zip.py export/version_IA CASSIVI_MediaBuyer_IA CASSIVI_MediaBuyer_IA "CASSIVI DIGITAL MG — Formation Media Buyer pilotée par l'IA"
 ```
 
+## VERSION FINALE — voix « Nicolas » (`export/version_finale/`, 58 s)
+
+La version finale garde les scènes du modèle IA qui fonctionnaient, les recale sur la voix off ElevenLabs « Nicolas » (texte exact fourni par le client) et les renforce :
+- **Sa mission** en 3 grandes cartes : la bonne pub, les bons clients, faire grandir les ventes.
+- **Cockpit Claude** en pages plein écran, plus lisibles : connecteurs, skills, conversation avec les appels d'outils, tableau de bord KPI, puis « Analyse prête en 3 min ». La mention « SIMULATION » reste affichée.
+- **Nouvelle scène « l'IA ne décide pas seule »** : Claude propose un plan (stratégie, budget, créatives). Le curseur « Media buyer » coche chaque point puis clique sur Valider, et le tampon « VALIDÉ PAR LE MEDIA BUYER » apparaît.
+- **Nouveau manifeste** : « L'IA ACCÉLÈRE. » (traînées de vitesse, logo Claude), puis « L'EXPERT DÉCIDE. » en or.
+- **Grand logo CASSIVI DIGITAL MG** sur « par CASSIVI DIGITAL MG ». L'offre passe maintenant avant les publics, dans l'ordre de la voix.
+- **Typographie agrandie** dans les 4 formats. Les infos pratiques passent sur 2 lignes en vertical. Les textes suivent la voix : « Une compétence très recherchée », « Décrocher des clients », « Devenir freelance », « Places limitées ».
+- **Musique** : même morceau 120 BPM. Le passage 41,54→57,54 s (8 mesures) est rejoué une fois, sans décaler la grille des temps, et l'outro finit naturellement à 58,06 s. Avant le CTA, une sourdine courte de 0,3 s tombe sur le temps fort.
+
+La voix (−22,5 LUFS à l'origine) est ramenée à −15,8 LUFS, le niveau validé au mixage du modèle IA, avec +7 dB et un limiteur de crêtes. Elle passe ensuite par la même chaîne que les autres versions. Master : −14 LUFS / −1,5 dBTP.
+
+Rejouer :
+```
+python3 src/voice_final_edit.py        # montage voix, repères, sous-titres, voix de mixage
+python3 src/music_final_edit.py
+python3 src/sfx_final.py build/cues_final.json audio/sfx_final.wav 58.165
+src/mix30.sh build/cues_final.json audio/voice_final_mix.wav audio/music_final_edit.wav audio/sfx_final.wav audio/mix_final_v.wav
+src/render_final_all.sh
+python3 src/srt_final.py
+python3 src/qc_final.py
+python3 src/package_zip.py export/version_finale CASSIVI_MediaBuyer_Final CASSIVI_MediaBuyer_VERSION-FINALE "CASSIVI DIGITAL MG — Formation Media Buyer pilotée par l'IA — VERSION FINALE"
+```
+Aperçus : `PAGE=pub_final.html src/sheet30.sh nom 1080 1920 build/cues_final.json 0.5 12.5 …`
+
 ## Structure narrative (AIDA)
 
 | Temps | Scène | Rôle |
