@@ -29,3 +29,7 @@ build/qc30v3/
 build/seg_v4/
 build/render_v4.log
 build/qc_v4/
+build/seg_v3b/
+build/render_v3b.log
+build/qc_v3b/
+build/prev30_err_*.txt
