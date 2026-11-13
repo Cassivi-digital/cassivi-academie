@@ -54,3 +54,6 @@ Caractéristiques techniques : MP4, H.264 High 4.1, 30 i/s, couleurs BT.709, ima
 - Créez une seule publicité et personnalisez les éléments par placement : Feed → 4:5, Stories → fichier Stories, Reels → fichier Reels, in-stream → 16:9.
 - Objectif recommandé : **Messages → WhatsApp** (037 59 755 12).
 - Ajoutez le fichier `.srt` comme sous-titres.
+
+## Sources du projet
+Animation : `src/pub_v4.html` · voix : `src/voice_v4_edit.py` · sound design : `src/sfx_v4.py` · mix : `src/mix30.sh` · rendu : `src/render_v4_all.sh` · encodage : `src/package_v4.sh` (dans le dossier `video-pub`).
