@@ -26,3 +26,6 @@ build/qc30v2/
 build/seg30v3/
 build/render30v3.log
 build/qc30v3/
+build/seg_v4/
+build/render_v4.log
+build/qc_v4/
