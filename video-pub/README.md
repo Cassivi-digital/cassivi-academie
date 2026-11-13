@@ -54,6 +54,30 @@ python3 src/package_zip.py export/version_v3_sans_date CASSIVI_MediaBuyer_v3_san
 ```
 Le ZIP (non versionné) contient les fichiers renommés par plateforme et un LISEZ-MOI.
 
+## Modèle « Formation Media Buyer pilotée par l'IA » (`export/version_IA/`, 44 s)
+
+Nouveau modèle construit sur le moteur de la v3. Il contient :
+- le hook méta avec le tampon « avec l'IA » ;
+- MEDIA BUYER « piloté par l'IA » ;
+- le **cockpit Claude réaliste** : fenêtre 3D, connecteurs Meta Ads, Google Ads, GA4, Tag Manager, Search Console, Sheets, Shopify et HubSpot, skills, demande et appels d'outils synchronisés avec la voix, mention « Simulation » ;
+- les compétences très recherchées et « Deviens freelance » ;
+- « Idéale pour » : e-commerçants, entrepreneurs, PME, agences, community managers, étudiants et futurs freelances ;
+- l'offre « dispensée par CASSIVI DIGITAL MG » avec des formateurs expérimentés (photos réelles) ;
+- les infos pratiques, puis le CTA WhatsApp avec un blanc minimal.
+
+La voix off française est « Etienne » (Cartesia, via Speko) ; ElevenLabs était saturé. La prononciation a été vérifiée par transcription. Les logos viennent de Simple Icons 16.37 (`src/brand_icons_ia.js`).
+
+Rejouer :
+```
+python3 src/voice_ia_edit.py
+python3 src/music_ia_edit.py
+python3 src/sfx_ia.py build/cues_ia.json audio/sfx_ia.wav <durée>
+src/mix30.sh build/cues_ia.json audio/voice_ia_edit.wav audio/music_ia_edit.wav audio/sfx_ia.wav audio/mix_ia_final.wav
+src/render_ia_all.sh
+python3 src/qc_ia.py
+python3 src/package_zip.py export/version_IA CASSIVI_MediaBuyer_IA CASSIVI_MediaBuyer_IA "CASSIVI DIGITAL MG — Formation Media Buyer pilotée par l'IA"
+```
+
 ## Structure narrative (AIDA)
 
 | Temps | Scène | Rôle |
