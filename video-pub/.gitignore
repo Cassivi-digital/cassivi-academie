@@ -34,3 +34,6 @@ build/render_v3b.log
 build/qc_v3b/
 build/prev30_err_*.txt
 export/**/*.zip
+build/seg_ia/
+build/render_ia.log
+build/qc_ia/
