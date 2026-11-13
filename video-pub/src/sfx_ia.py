@@ -44,7 +44,7 @@ def build(C, total):
     # idéale pour
     wh(C['e0'] - .08, .55, f0=300, f1=6000, gain=.32, pan0=0, pan1=0); put(impact(.5, 58, 1.3, .5, .2), C['e0'])
     for i, k in enumerate(['e1', 'e2', 'e3', 'e4', 'e5', 'e6']): put(impact(.4, 62, 1.0, .5, .18), C[k] - .08); put(blip(1600 + i * 150, .1, .18), C[k] - .06)
-    put(shimmer(.2, 1568, 1.6), C['e6'] + .35)
+    put(shimmer(.2, 1568, 1.6), C['e0'] + .45)
     # l'offre : formation pilotée par l'IA, CASSIVI DIGITAL MG, formateurs expérimentés
     wh(C['r0'] - .1, .6, f0=200, f1=5000, gain=.36, pan0=0, pan1=0); put(impact(.6, 52, 1.6, .4, .3), C['r0'])
     put(shimmer(.18, 1174, 1.6), C['rp'])

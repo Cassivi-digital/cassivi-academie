@@ -6,7 +6,8 @@ SR=48000; DIP=0.5; LP=380
 C=json.load(open('build/cues_ia.json')); subs=json.load(open('build/subs_ia.json'))
 x=np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i','audio/music_raw.wav','-ar',str(SR),'-f','f32le','-'],capture_output=True).stdout,np.float32).reshape(-1,2).copy()
 g=lambda s:int(round(s*SR)); xf=g(.04); st=25.54-C['b1']
-A=x[g(st):g(57.54)]; B=x[g(63.54):]
+A_END=59.54  # raccord sur la mesure : la fin naturelle du morceau tombe juste avant la fin de la vidéo
+A=x[g(st):g(A_END)]; B=x[g(63.54):]
 r=np.linspace(0,1,xf)[:,None]; y=np.concatenate([A[:-xf],A[-xf:]*(1-r)+B[:xf]*r,B[xf:]])[:g(C['end'])]
 # respiration : creux de -12 dB entre la fin de « Places très limitées ! » et le CTA
 u_end=[b for a,b,t in subs if t.startswith('Places très limitées')][0]
@@ -21,4 +22,4 @@ y=(y*(1-a)[:,None]+lp*a[:,None])*(1-(1-DIP)*a)[:,None]
 with wave.open('audio/music_ia_edit.wav','wb') as w:
     w.setnchannels(2);w.setsampwidth(2);w.setframerate(SR);w.writeframes((np.clip(y,-1,1)*32767).astype('<i2').tobytes())
 beat=C['b1']+.045
-print(f"musique {len(y)/SR:.2f}s | creux {d0:.3f}→{e1:.3f} | CTA g0={C['g0']} | temps musical le plus proche {beat+round((C['g0']-.05-beat)/.5)*.5:.3f} | raccord outro {57.54-st:.3f}")
+print(f"musique {len(y)/SR:.2f}s | creux {d0:.3f}→{e1:.3f} | CTA g0={C['g0']} | temps musical le plus proche {beat+round((C['g0']-.05-beat)/.5)*.5:.3f} | raccord outro {A_END-st:.3f}")

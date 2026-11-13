@@ -396,7 +396,7 @@ function renderS6(t){
   const on=t>C.s6-.02&&t<C.s7+.05;vis(s6,on);if(!on)return;
   tf(s6bg,{s:L(1.14,1.03,P(t,C.s6,C.s7-C.s6))});tf(s6lab,{o:E.oCub(P(t,C.s6,.3))});rw(s6t,t,C.e0,{st:.08,d:.4});
   aus.forEach((a,i)=>{const s=C[a.cue]-.08;const p=E.oBack(P(t,s,.42));tf(a.e,{s:L(.55,1,p),o:cl(p*2),y:(1-E.oExpo(P(t,s,.5)))*40})});
-  const pp=E.oBack(P(t,C.e6+.35,.45));tf(s6pill,{s:L(.4,1,pp),o:cl(pp*2)});
+  const pp=E.oBack(P(t,C.e0+.45,.45));tf(s6pill,{s:L(.4,1,pp),o:cl(pp*2)});
 }
 
 /* ============ SCÈNE 7 — l'offre : formation pilotée par l'IA, dispensée par CASSIVI DIGITAL MG ============ */
