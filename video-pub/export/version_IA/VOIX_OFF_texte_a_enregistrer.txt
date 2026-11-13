@@ -1,0 +1,55 @@
+VOIX OFF — « Formation Media Buyer pilotée par l'IA » — CASSIVI DIGITAL MG
+==========================================================================
+
+Durée visée : 38 à 42 secondes (la vidéo dure 44 s).
+Voix : français de France, natif, sans accent, très naturelle.
+Ton : énergique, percutant et souriant, comme une pub radio ou un Reels. Débit dynamique, environ 170 à 180 mots par minute, avec des pauses courtes.
+
+
+1) TEXTE À LIRE (une ligne = une scène de la vidéo)
+---------------------------------------------------
+01  Cette pub que tu regardes… quelqu'un est payé pour la piloter — avec l'IA.
+02  Ce métier, c'est Media Buyer.
+03  Il cible les bons clients… et fait grandir les ventes.
+04  Avec Claude, ses connecteurs et ses skills, il mesure et pilote tout : Meta Ads, Google Ads, Analytics, le Pixel.
+05  Des compétences très recherchées… pour décrocher des clients, et devenir freelance.
+06  Idéale pour les e-commerçants, entrepreneurs, PME, agences, community managers et étudiants.
+07  La formation Media Buyer pilotée par l'IA, dispensée par CASSIVI DIGITAL MG, avec des formateurs expérimentés.
+08  Deux jours en salle à Antsakaviro… et un mois de suivi.
+09  Places très limitées !
+10  Réserve ta place sur WhatsApp : 037 59 755 12.
+
+Les points de suspension (…) marquent une petite respiration, le tiret (—) un temps court avant « avec l'IA ».
+Insister sur : « avec l'IA », « Media Buyer », « tout », « très recherchées », « freelance », « Places très limitées ! ».
+
+
+2) PRONONCIATION
+----------------
+Media Buyer ............ « Média Bayeur »
+l'IA ................... « l'i-a »
+Claude ................. comme le prénom (« Clôde »)
+skills ................. « skilz »
+Meta Ads / Google Ads .. « Méta Adz » / « Gougueul Adz »
+PME .................... « pé-èm-eu »
+CASSIVI DIGITAL MG ..... « Cassivi Digital èm-jé »
+Antsakaviro ............ « Antsakavirou »
+037 59 755 12 .......... « zéro trente-sept… cinquante-neuf… sept cent cinquante-cinq… douze »
+
+
+3) VERSION À COLLER DANS UN GÉNÉRATEUR DE VOIX (ElevenLabs, etc.)
+-----------------------------------------------------------------
+Cette pub que tu regardes… quelqu'un est payé pour la piloter — avec l'IA. Ce métier, c'est Média Bayeur. Il cible les bons clients… et fait grandir les ventes. Avec Claude, ses connecteurs et ses skills, il mesure et pilote tout : Meta Ads, Google Ads, Analytics, le Pixel. Des compétences très recherchées… pour décrocher des clients, et devenir freelance. Idéale pour les e-commerçants, entrepreneurs, PME, agences, community managers et étudiants. La formation Média Bayeur pilotée par l'IA, dispensée par Cassivi Digital MG, avec des formateurs expérimentés. Deux jours en salle à Antsakavirou… et un mois de suivi. Places très limitées ! Réserve ta place sur WhatsApp : zéro trente-sept… cinquante-neuf… sept cent cinquante-cinq… douze.
+
+Conseils pour ElevenLabs :
+- Modèle : Eleven Multilingual v2 (ou Eleven v3).
+- Voix : dans la Voice Library, filtrez Langue = Français, Accent = France (ou parisien), Usage = Advertisement / Narration. Choisissez une voix masculine jeune et dynamique.
+- Réglages : Stabilité 40-50 %, Similarité 75-80 %, Style 15-30 %, « Speaker boost » activé, vitesse 1,0 à 1,1.
+- Générez 2 ou 3 prises et gardez la plus vivante.
+
+
+4) LE FICHIER À M'ENVOYER
+-------------------------
+- Format WAV de préférence, ou MP3 en 192 kb/s minimum (44,1 ou 48 kHz).
+- La voix seule, sans musique, sans effets ni réverbération.
+- Une prise complète dans l'ordre du texte, ou une phrase par fichier, numérotées de 01 à 10.
+- La durée exacte n'a pas d'importance : je recale toute l'animation sur votre voix (apparitions, sous-titres, musique, impact du CTA), puis je refais les 5 formats en qualité maximale.
