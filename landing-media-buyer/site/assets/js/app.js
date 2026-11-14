@@ -11,7 +11,7 @@
   };
   var CFG = Object.assign({}, DEFAULTS, window.CASSIVI_CONFIG || {});
   var LIEU = 'Antsakaviro, à droite du centre de thèse de la faculté de médecine, Antananarivo';
-  var KEYS = { draft: 'cassivi-mb-brouillon-v1', sub: 'cassivi-mb-candidature-v1', utm: 'cassivi-mb-utm-v1' };
+  var KEYS = { draft: 'cassivi-mb-brouillon-v1', sub: 'cassivi-mb-inscription-v1', utm: 'cassivi-mb-utm-v1' };
 
   /* ------------------------------------------------------------ utilitaires */
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -168,7 +168,7 @@
   function initStickyCta() {
     var bar = $('#sticky-cta');
     if (!bar || !('IntersectionObserver' in window)) return;
-    var zones = [$('.hero'), $('#candidature'), $('.final'), $('#paiement')].filter(Boolean), seen = [];
+    var zones = [$('.hero'), $('#reservation'), $('.final'), $('#paiement')].filter(Boolean), seen = [];
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { seen[zones.indexOf(en.target)] = en.isIntersecting && !en.target.hidden; });
       bar.classList.toggle('is-visible', !seen.some(Boolean));
@@ -229,7 +229,7 @@
   }
 
   /* ------------------------------------------------------------ formulaire */
-  var form = $('#form-candidature');
+  var form = $('#form-inscription');
   if (!form) { boot(); return; }
   form.noValidate = true;
   var card = $('#form-card');
@@ -286,7 +286,7 @@
     budget: { required: true, msg: 'Choisissez une fourchette de budget, même approximative.' },
     objectif: { required: true, msg: 'Choisissez votre objectif principal.' },
     attentes: { required: true, max: 3, msg: 'Choisissez au moins une priorité (3 au maximum).' },
-    presence: { required: true, msg: 'Confirmez votre présence aux deux journées. Un empêchement ? Écrivez-nous sur WhatsApp avant de candidater.' },
+    presence: { required: true, msg: 'Confirmez votre présence aux deux journées. Un empêchement ? Écrivez-nous sur WhatsApp avant de vous inscrire.' },
     laptop: { required: true, msg: 'Indiquez si vous apporterez un ordinateur portable.' },
     visa: { required: true, msg: 'Indiquez si vous avez une carte Visa.' },
     source: { required: true, msg: 'Indiquez comment vous avez connu la formation.' },
@@ -294,7 +294,7 @@
     acompte: { required: true, msg: 'Indiquez où vous en êtes avec l’acompte.' },
     acompte_operateur: { requiredIf: function () { return val('acompte') === 'paye'; }, msg: 'Choisissez le service utilisé pour le transfert.' },
     acompte_ref: { requiredIf: function () { return val('acompte') === 'paye'; }, min: 4, msg: 'Indiquez la référence de la transaction : elle figure dans le SMS de confirmation.' },
-    consent: { required: true, msg: 'Votre accord est nécessaire pour que nous puissions traiter votre candidature.' }
+    consent: { required: true, msg: 'Votre accord est nécessaire pour que nous puissions traiter votre inscription.' }
   };
 
   function setError(name, msg) {
@@ -552,7 +552,7 @@
         $('#upload-preview').hidden = false; $('#upload-btn-text').textContent = 'Changer d’image';
       }).catch(function () {
         clearCapture();
-        err.textContent = fr('Image illisible. Vous pourrez envoyer la capture sur WhatsApp après votre candidature.');
+        err.textContent = fr('Image illisible. Vous pourrez envoyer la capture sur WhatsApp après votre inscription.');
       });
     });
     $('#upload-remove').addEventListener('click', function () { clearCapture(); capInput.focus(); });
@@ -565,7 +565,7 @@
   }
   function acompteLabel() {
     if (val('acompte') === 'paye') return 'Déjà réglé · ' + val('acompte_operateur') + ' · réf. ' + val('acompte_ref') + (state.capture ? ' · capture jointe' : '');
-    return 'À régler après la candidature';
+    return 'À régler après l’inscription';
   }
   function renderReview() {
     var ph = normPhone(val('whatsapp'));
@@ -588,7 +588,7 @@
     var b = e.target.closest('[data-goto]'); if (b) showStep(parseInt(b.getAttribute('data-goto'), 10), true);
   });
 
-  /* -- score et priorité (pour trier les candidatures dans le tableau) */
+  /* -- score et priorité (pour trier les inscriptions dans le tableau) */
   function scoring() {
     var s = 0;
     if (val('acompte') === 'paye') s += 35;
@@ -601,7 +601,7 @@
     if (val('besoins')) s += 5;
     if (['bouche', 'ancien'].indexOf(val('source')) > -1) s += 5;
     s = Math.min(100, s);
-    var p = (val('acompte') === 'paye' || s >= 60) ? 'Prioritaire' : (s >= 35 ? 'Intéressé(e)' : 'À qualifier');
+    var p = (val('acompte') === 'paye' || s >= 60) ? 'Prioritaire' : (s >= 35 ? 'Qualifié' : 'À accompagner');   // mêmes libellés que le tableau de bord
     return { score: s, priorite: p };
   }
 
@@ -661,7 +661,7 @@
   function setSending(on) {
     state.sending = on;
     btnSubmit.disabled = on; btnSubmit.classList.toggle('is-sending', on);
-    btnSubmit.querySelector('.btn__label').textContent = on ? 'Envoi en cours…' : 'Envoyer ma candidature';
+    btnSubmit.querySelector('.btn__label').textContent = on ? 'Réservation en cours…' : 'Réserver ma place';
     btnPrev.disabled = on;
   }
   function waFallbackText(p) {
@@ -693,7 +693,7 @@
     var mkP = settle(postMake(p)), nfP = settle(postNetlify(p));
     var mk = await mkP, nf = await nfP;
     var makeOk = mk.ok && mk.value.ok;
-    // TypeError côté Make = réseau coupé OU réponse illisible (CORS) alors que la candidature est bien arrivée.
+    // TypeError côté Make = réseau coupé OU réponse illisible (CORS) alors que l’inscription est bien arrivée.
     // La requête Netlify (même site) sert de témoin : si elle a obtenu une réponse, le réseau fonctionnait.
     var makeOpaque = !mk.ok && mk.error && mk.error.name === 'TypeError';
     var netlifyOk = nf.ok && nf.value.ok;
@@ -793,7 +793,7 @@
   }
   function renderSuccess(sub) {
     var html = '<div class="success__icon">' + icon('check-circle') + '</div>' +
-      '<h3 class="success__title" id="success-titre" tabindex="-1">' + h('Merci ' + sub.prenom + ', votre candidature est bien reçue.') + '</h3>' +
+      '<h3 class="success__title" id="success-titre" tabindex="-1">' + h('Merci ' + sub.prenom + ', votre inscription est bien enregistrée.') + '</h3>' +
       '<p>' + h('Un e-mail de confirmation vient de partir à ') + '<b>' + esc(sub.email) + '</b>. ' + h('Vous ne le voyez pas d’ici quelques minutes ? Regardez dans les onglets Promotions ou Spam.') + '</p>' +
       '<div class="ticket"><div><span class="ticket__label">' + h('Votre référence') + '</span><span class="ticket__ref">' + esc(sub.id) + '</span>' +
       '<span class="ticket__hint">' + h('Gardez-la : elle sert de motif à votre paiement.') + '</span></div>' + copyBtn(sub.id, 'la référence') + '</div>';
@@ -838,11 +838,11 @@
     }
     if (sub && sub.id && (Date.now() - (sub.at || 0)) < 60 * 864e5) {
       var n = $('#notice-deja');
-      n.innerHTML = icon('info') + '<div><p>' + h('Vous avez déjà envoyé une candidature depuis cet appareil (réf. ' + sub.id + ').') + '</p>' +
+      n.innerHTML = icon('info') + '<div><p>' + h('Vous êtes déjà inscrit(e) depuis cet appareil (réf. ' + sub.id + ').') + '</p>' +
         '<div class="notice__actions"><a class="btn btn--primary btn--sm" href="?ref=' + encodeURIComponent(sub.id) + '#paiement">' + h('Voir les instructions de paiement') + '</a>' +
-        '<button type="button" class="btn btn--secondary btn--sm" id="nouvelle-candidature">' + h('Faire une nouvelle candidature') + '</button></div></div>';
+        '<button type="button" class="btn btn--secondary btn--sm" id="nouvelle-inscription">' + h('Faire une nouvelle inscription') + '</button></div></div>';
       n.hidden = false;
-      $('#nouvelle-candidature').addEventListener('click', function () { store.del(KEYS.sub); n.hidden = true; $('#f-prenom').focus(); });
+      $('#nouvelle-inscription').addEventListener('click', function () { store.del(KEYS.sub); n.hidden = true; $('#f-prenom').focus(); });
     }
   }
 
@@ -857,7 +857,7 @@
       '<p>' + h('Laissez-nous un message sur WhatsApp : nous vous informerons en priorité de la prochaine session.') + '</p>' +
       '<div class="btn-row"><a class="btn btn--wa" href="' + esc(waLink('Bonjour, je souhaite être informé(e) de la prochaine session de la formation Media Buyer.')) + '" target="_blank" rel="noopener">' + icon('whatsapp') + ' ' + h('Être informé(e) de la prochaine session') + '</a></div>';
     c.hidden = false;
-    $$('[data-cta]').forEach(function (a) { a.setAttribute('href', '#candidature'); });
+    $$('[data-cta]').forEach(function (a) { a.setAttribute('href', '#reservation'); });
     return true;
   }
 

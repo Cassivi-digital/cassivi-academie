@@ -1,9 +1,9 @@
 """Génère le scénario Make « Formation Media Buyer 28-30 nov » (blueprint JSON) et les aperçus HTML des e-mails.
 
 Un seul scénario, déclenché par un webhook (forfait Make gratuit : 2 scénarios actifs au maximum) :
-  route 1  action=inscription  (page)        → ligne dans Google Sheets, réponse à la page, e-mail candidat, alerte admin
+  route 1  action=inscription  (page)        → ligne dans Google Sheets, réponse à la page, e-mail au participant, alerte admin
   route 2  action=valider      (lien admin)  → statut « Place confirmée », e-mail de confirmation, page de réponse avec WhatsApp prêt
-  route 3  action=probleme     (lien admin)  → statut « Paiement à vérifier », e-mail au candidat
+  route 3  action=probleme     (lien admin)  → statut « Paiement à vérifier », e-mail au participant
   route 4  action=cron         (1 fois/jour) → relances acompte, rappels J-2 / J-1 / veille J2, remerciement, point du jour admin
 
 usage : python3 make/build_scenario.py  (écrit make/blueprint.json et make/apercus_emails/*.html)
@@ -36,7 +36,7 @@ SAMPLE = dict(id='MB-7K3Q9P', prenom='Hanta', nom='Rakoto', email='hanta@example
               visa='activation', visa_label='À activer sur place', source_label='Facebook', utm='facebook / cpc / media-buyer-nov',
               facture_label='Non', besoins='Je voudrais savoir si on travaille sur notre propre page.', acompte='plus_tard',
               acompte_operateur='', acompte_ref='', capture_b64='', priorite='Prioritaire', score='72',
-              page_url='https://formation-media-buyer.netlify.app/', statut='Candidature reçue', dernier='Accusé de réception · 14/11 10:02',
+              page_url='https://formation-media-buyer.netlify.app/', statut='Inscription reçue', dernier='Accusé de réception · 14/11 10:02',
               inscrit='14/11/2026 10:02')
 
 
@@ -105,7 +105,7 @@ def wa_to_admin(c, intro):
     return (f"https://wa.me/{WA_ADMIN}?text=" + Q(intro + ' (réf. ') + c.enc('id') + Q(', ') + c.enc('prenom') + Q(' ') + c.enc('nom') + Q(').'))
 
 def wa_to_lead(c, before, after=''):
-    """lien WhatsApp vers le candidat, message pré-rédigé (le prénom est inséré)."""
+    """lien WhatsApp vers le participant, message pré-rédigé (le prénom est inséré)."""
     return f"https://wa.me/{c.wa_digits()}?text=" + Q(before) + c.enc('prenom') + Q(after)
 
 OBJ = {'vendre': '<p><b>Votre objectif : vendre plus avec votre activité.</b> Pendant les deux jours, vous travaillez sur des campagnes adaptées à votre offre, et le mois de suivi vous aide à les faire tourner.</p>',
@@ -132,11 +132,11 @@ def prep_list(c, sheet):
             + "<li>De quoi prendre des notes, et votre motivation.</li></ul>")
 
 
-# ---------------------------------------------------------------- E1 accusé de réception (candidat)
+# ---------------------------------------------------------------- E1 accusé de réception (participant)
 def e1(c):
     paid = ('1.acompte = "paye"', SAMPLE['acompte'] == 'paye')
     body = (f"<p>Bonjour {c.v('prenom')},</p>"
-            "<p>Merci pour votre candidature à la <b>formation Media Buyer pilotée par l’IA</b> : deux journées en salle à Antsakaviro, "
+            "<p>Merci pour votre inscription à la <b>formation Media Buyer pilotée par l’IA</b> : deux journées en salle à Antsakaviro, "
             "<b>samedi 28 et lundi 30 novembre, de 8h à 17h</b>, puis un mois de suivi.</p>"
             + c.sw('objectif', OBJ) + c.sw('niveau_meta', LVL)
             + box(f"Votre référence : <b style='font-size:17px;letter-spacing:1px'>{c.v('id')}</b><br><span style='color:#5C6B86;font-size:13.5px'>Gardez-la : elle sert de motif pour votre paiement.</span>", '#B8914A', '#FBF6EC')
@@ -148,11 +148,11 @@ def e1(c):
             + "<p style='margin:18px 0 6px'><b>Pour être prêt(e) le jour J :</b></p>" + prep_list(c, False)
             + "<p>Une question ? Répondez simplement à cet e-mail, ou écrivez-nous sur WhatsApp au 037 59 755 12.</p>" + SIG)
     body = body.replace('PAYLINK', c.paylink())
-    subj = f"{c.v('prenom')}, votre candidature est bien reçue · Formation Media Buyer (28 & 30 nov.)"
-    return subj, layout('Votre candidature est bien reçue', body)
+    subj = f"{c.v('prenom')}, votre inscription est bien enregistrée · Formation Media Buyer (28 & 30 nov.)"
+    return subj, layout('Votre inscription est bien enregistrée', body)
 
 
-# ---------------------------------------------------------------- E2 alerte admin (nouvelle candidature)
+# ---------------------------------------------------------------- E2 alerte admin (nouvelle inscription)
 def e2(c):
     row = lambda k, lab: f"<tr><td style='padding:7px 10px 7px 0;color:#5C6B86;font-size:13.5px;vertical-align:top;white-space:nowrap'>{lab}</td><td style='padding:7px 0;font-size:14.5px;font-weight:bold'>{c.v(k)}</td></tr>"
     fields = [('id', 'Référence'), ('priorite', 'Priorité'), ('score', 'Score /100'), ('email', 'E-mail'), ('whatsapp', 'WhatsApp'),
@@ -168,17 +168,17 @@ def e2(c):
         + c.iff('1.capture_b64', bool(SAMPLE['capture_b64']), f"<br>Capture du transfert enregistrée dans Drive : <a href='{DRIVE_URL}'>dossier des captures</a>.", '')
     valider = f"{HOOK_URL}?action=valider&amp;id={c.v('id')}&amp;t={TOKEN}"
     probleme = f"{HOOK_URL}?action=probleme&amp;id={c.v('id')}&amp;t={TOKEN}"
-    welcome = wa_to_lead(c, 'Bonjour ', f', ici Sitraka de CASSIVI DIGITAL MG. Merci pour votre candidature à la formation Media Buyer pilotée par l’IA (samedi 28 et lundi 30 novembre, Antsakaviro). Votre référence : ') \
+    welcome = wa_to_lead(c, 'Bonjour ', f', ici Sitraka de CASSIVI DIGITAL MG. Merci pour votre inscription à la formation Media Buyer pilotée par l’IA (samedi 28 et lundi 30 novembre, Antsakaviro). Votre référence : ') \
         + c.enc('id') + Q('. Pour bloquer votre place, il reste l’acompte de 50 000 Ar : tout est expliqué ici ') + (c.enc('page_url') if c.mode == 'make' else Q(SAMPLE['page_url'])) \
         + Q('?ref=') + c.enc('id') + Q('#paiement . Une question ? Je suis là.')
-    body = (f"<p style='margin:0 0 14px'><b>{c.v('prenom')} {c.v('nom')}</b> vient de candidater.</p>" + table
+    body = (f"<p style='margin:0 0 14px'><b>{c.v('prenom')} {c.v('nom')}</b> vient de s’inscrire.</p>" + table
             + box(acompte, '#B8914A', '#FBF6EC')
             + "<p style='margin:0 0 6px'><b>Quand l’acompte est reçu sur MVola ou Orange Money :</b> un clic suffit, la confirmation part toute seule.</p>"
             + btn(valider, 'Valider la place', '#1FAA57') + btn(probleme, 'Paiement à vérifier', '#B42318')
             + "<p style='margin:14px 0 6px'><b>Message de bienvenue WhatsApp</b> (déjà rédigé) :</p>" + btn(welcome, 'Ouvrir WhatsApp', '#1FAA57')
             + btn(SHEET_URL, 'Ouvrir le tableau de suivi', '#0A1B3F'))
     subj = f"[Media Buyer] {c.v('priorite')} · {c.v('prenom')} {c.v('nom')} · " + c.iff(paid[0], paid[1], 'acompte déclaré', 'acompte à venir')
-    return subj, layout(f"Nouvelle candidature : {c.v('prenom')} {c.v('nom')}", body, 'ALERTE · FORMATION MEDIA BUYER 28 & 30 NOV', foot=False)
+    return subj, layout(f"Nouvelle inscription : {c.v('prenom')} {c.v('nom')}", body, 'ALERTE · FORMATION MEDIA BUYER 28 & 30 NOV', foot=False)
 
 
 # ---------------------------------------------------------------- E3 place confirmée (source : ligne du Sheets)
@@ -209,12 +209,12 @@ def relance(c, n):
     if n == 1:
         subj = f"{c.v('prenom')}, votre place pour la formation Media Buyer n’est pas encore bloquée"
         title, intro = 'Votre place n’est pas encore bloquée', (
-            "<p>Merci pour votre candidature à la <b>formation Media Buyer pilotée par l’IA</b> (samedi 28 et lundi 30 novembre, Antsakaviro) !</p>"
-            "<p>Pour transformer votre candidature en place réservée, il reste une étape : l’acompte de <b>50 000 Ar</b> par Mobile Money. Le solde se règle sur place, le premier jour.</p>")
+            "<p>Merci pour votre inscription à la <b>formation Media Buyer pilotée par l’IA</b> (samedi 28 et lundi 30 novembre, Antsakaviro) !</p>"
+            "<p>Pour transformer votre inscription en place réservée, il reste une étape : l’acompte de <b>50 000 Ar</b> par Mobile Money. Le solde se règle sur place, le premier jour.</p>")
     elif n == 2:
         subj = f"{c.v('prenom')}, toujours partant(e) pour la formation Media Buyer du 28 novembre ?"
         title, intro = 'Toujours partant(e) ?', (
-            "<p>Votre candidature est toujours en attente d’acompte. Si quelque chose vous freine, dites-le-nous :</p>"
+            "<p>Votre inscription est toujours en attente d’acompte. Si quelque chose vous freine, dites-le-nous :</p>"
             "<ul style='margin:6px 0 18px 18px;padding:0'><li><b>Vous débutez ?</b> On part des bases, pas à pas.</li>"
             "<li><b>Pas de carte Visa ?</b> Elle peut être activée sur place.</li>"
             "<li><b>Une question sur le paiement ?</b> Écrivez-nous, on vous répond vite.</li></ul>"
@@ -223,7 +223,7 @@ def relance(c, n):
         subj = 'Dernier rappel : la formation Media Buyer commence samedi'
         title, intro = 'La formation commence samedi', (
             "<p>La <b>formation Media Buyer pilotée par l’IA</b> commence <b>samedi 28 novembre à 8h</b>, à Antsakaviro.</p>"
-            "<p>Votre candidature est enregistrée, mais votre place n’est pas encore confirmée : les places sont limitées et attribuées à réception de l’acompte de <b>50 000 Ar</b>.</p>")
+            "<p>Votre inscription est enregistrée, mais votre place n’est pas encore confirmée : les places sont limitées et attribuées à réception de l’acompte de <b>50 000 Ar</b>.</p>")
     body = (f"<p>Bonjour {c.v('prenom')},</p>" + intro
             + btn(c.paylink(), 'Voir les instructions de paiement')
             + btn(wa_to_admin(c, 'Bonjour, voici la preuve de mon acompte pour la formation Media Buyer'), 'J’ai payé : envoyer ma preuve', '#1FAA57')
@@ -263,13 +263,13 @@ def digest_row(c):
             f"<td {td}><a href='{relance_wa}' style='color:#1FAA57;font-weight:bold'>WhatsApp</a><br><a href='{c.v('valider')}' style='color:#1E5BFF;font-weight:bold'>Valider</a></td></tr>")
 
 def digest(c_text):
-    body = ("<p style='margin:0 0 14px'>Voici les candidatures qui attendent une action. Le lien <b>WhatsApp</b> ouvre un message de relance déjà rédigé ; "
+    body = ("<p style='margin:0 0 14px'>Voici les inscriptions qui attendent une action. Le lien <b>WhatsApp</b> ouvre un message de relance déjà rédigé ; "
             "<b>Valider</b> confirme la place et envoie l’e-mail au participant.</p>"
             "<table style='border-collapse:collapse;width:100%;margin:0 0 18px'><tr>"
-            "<th style='text-align:left;padding:8px;background:#EEF2FA;font-size:12.5px'>Candidat</th><th style='text-align:left;padding:8px;background:#EEF2FA;font-size:12.5px'>Statut</th>"
+            "<th style='text-align:left;padding:8px;background:#EEF2FA;font-size:12.5px'>Participant</th><th style='text-align:left;padding:8px;background:#EEF2FA;font-size:12.5px'>Statut</th>"
             "<th style='text-align:left;padding:8px;background:#EEF2FA;font-size:12.5px'>Action</th></tr>" + c_text + "</table>"
             + btn(SHEET_URL, 'Ouvrir le tableau de suivi', '#0A1B3F'))
-    return layout('Point du jour : candidatures à suivre', body, 'POINT DU JOUR · FORMATION MEDIA BUYER 28 & 30 NOV', foot=False)
+    return layout('Point du jour : inscriptions à suivre', body, 'POINT DU JOUR · FORMATION MEDIA BUYER 28 & 30 NOV', foot=False)
 
 
 # ---------------------------------------------------------------- pages de réponse (liens « Valider » / « Paiement à vérifier »)
@@ -339,7 +339,7 @@ def build(mode='make'):
     W = Ctx(mode, 1)
     # ---- route 1 : inscription
     values = {
-        '0': '{{1.id}}', '1': NOW, '2': '{{if(1.acompte = "paye"; "Acompte déclaré"; "Candidature reçue")}}', '3': '{{1.priorite}}', '4': '{{1.score}}',
+        '0': '{{1.id}}', '1': NOW, '2': '{{if(1.acompte = "paye"; "Acompte déclaré"; "Inscription reçue")}}', '3': '{{1.priorite}}', '4': '{{1.score}}',
         '5': '{{1.prenom}}', '6': '{{1.nom}}', '7': '{{lower(trim(1.email))}}', '8': '{{1.whatsapp}}', '9': '{{1.ville}}', '10': '{{1.profil_label}}',
         '11': '{{1.entreprise}}', '12': '{{1.site}}', '13': '{{1.niveau_meta_label}}', '14': '{{1.niveau_google_label}}', '15': '{{1.tracking_label}}',
         '16': '{{1.ia_label}}', '17': '{{1.objectif_label}}', '18': '{{1.budget_label}}', '19': '{{1.attentes_label}}', '20': '{{1.laptop_label}}',
@@ -395,13 +395,13 @@ def build(mode='make'):
     s3r, h3r = e3(R)
     agg = {'id': 66, 'module': 'util:TextAggregator', 'version': 1, 'parameters': {'feeder': 41, 'rowSeparator': ''},
            'mapper': {'value': digest_row(R)}, 'metadata': {'designer': {'x': 900, 'y': 1650}},
-           'filter': F('Candidatures à suivre', [st('Candidature reçue')], [st('Acompte déclaré')], [st('Paiement à vérifier')])}
+           'filter': F('Inscriptions à suivre', [st('Inscription reçue')], [st('Acompte déclaré')], [st('Paiement à vérifier')])}
     routes4 = [
-        [gmail(50, 900, 650, '{{41.`7`}}', *mails['R1'], F('Relance 1 (J+1)', [st('Candidature reçue'), C(rel, 'number:equal', '0'), C(hrs, 'number:greaterorequal', '20'), C(TODAY, 'number:less', '20261126')])),
+        [gmail(50, 900, 650, '{{41.`7`}}', *mails['R1'], F('Relance 1 (J+1)', [st('Inscription reçue'), C(rel, 'number:equal', '0'), C(hrs, 'number:greaterorequal', '20'), C(TODAY, 'number:less', '20261126')])),
          sheet_update(51, 1200, 650, 41, {'32': '1', '33': 'Relance 1 · ' + NOWS})],
-        [gmail(52, 900, 800, '{{41.`7`}}', *mails['R2'], F('Relance 2 (J+3)', [st('Candidature reçue'), C(rel, 'number:equal', '1'), C(hrs, 'number:greaterorequal', '68'), C(TODAY, 'number:less', '20261126')])),
+        [gmail(52, 900, 800, '{{41.`7`}}', *mails['R2'], F('Relance 2 (J+3)', [st('Inscription reçue'), C(rel, 'number:equal', '1'), C(hrs, 'number:greaterorequal', '68'), C(TODAY, 'number:less', '20261126')])),
          sheet_update(53, 1200, 800, 41, {'32': '2', '33': 'Relance 2 · ' + NOWS})],
-        [gmail(54, 900, 950, '{{41.`7`}}', *mails['R3'], F('Dernier rappel (26 nov.)', [st('Candidature reçue'), day('20261126'), C(rel, 'number:less', '3')],
+        [gmail(54, 900, 950, '{{41.`7`}}', *mails['R3'], F('Dernier rappel (26 nov.)', [st('Inscription reçue'), day('20261126'), C(rel, 'number:less', '3')],
                                                             [st('Paiement à vérifier'), day('20261126'), C(rel, 'number:less', '3')])),
          sheet_update(55, 1200, 950, 41, {'32': '3', '33': 'Dernier rappel · ' + NOWS})],
         [gmail(56, 900, 1100, '{{41.`7`}}', s3r, h3r, F('Place confirmée depuis le tableau', [st('Place confirmée'), C('{{41.`34`}}', 'notexist')])),
@@ -430,7 +430,7 @@ def build(mode='make'):
 def previews():
     out = os.path.join(HERE, 'apercus_emails'); os.makedirs(out, exist_ok=True)
     W, R = Ctx('preview', 1), Ctx('preview', 41)
-    items = [('01_accuse-reception_candidat', e1(W)), ('02_alerte-admin', e2(W)), ('03_place-confirmee', e3(R)),
+    items = [('01_accuse-reception', e1(W)), ('02_alerte-admin', e2(W)), ('03_place-confirmee', e3(R)),
              ('04_paiement-a-verifier', e4(R)), ('05_relance-1_J+1', relance(R, 1)), ('06_relance-2_J+3', relance(R, 2)),
              ('07_dernier-rappel_26-nov', relance(R, 3)), ('08_rappel-J-2', rappel(R, 'J2')), ('09_rappel-J-1', rappel(R, 'J1')),
              ('10_veille-jour-2', rappel(R, 'V2')), ('11_merci-suivi', rappel(R, 'M'))]

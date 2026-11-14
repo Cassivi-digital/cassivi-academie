@@ -166,7 +166,7 @@ const isId = id => new Function('return document.activeElement && document.activ
     ok(/hanta@gmail\.com/.test(review) && /\+261 34 12 345 67/.test(review) && /Boutique Hanta/.test(review), 'Récapitulatif complet (e-mail, WhatsApp, entreprise)');
     ok(/MVola/.test(review) && /capture jointe/.test(review), 'Récapitulatif : acompte réglé avec capture');
     await page.screenshot({ path: path.join(SHOTS, 'A3_verification.png'), fullPage: false });
-    ok(await tabTo(page, isId('btn-submit'), 12), 'Tab atteint « Envoyer ma candidature »');
+    ok(await tabTo(page, isId('btn-submit'), 12), 'Tab atteint « Réserver ma place »');
     const wait = 16500 - (Date.now() - tStart); if (wait > 0) await page.waitForTimeout(wait);   // un humain met plus de 15 s
     await page.keyboard.press('Enter');
     await page.waitForSelector('#success:not([hidden])', { timeout: 10000 });
@@ -198,7 +198,7 @@ const isId = id => new Function('return document.activeElement && document.activ
     const netl = fs.existsSync(NETLIFY_LOG) ? fs.readFileSync(NETLIFY_LOG, 'utf8').trim().split('\n').map(JSON.parse) : [];
     ok(netl.length === 1 && netl[0].body['form-name'] === 'inscription-media-buyer' && netl[0].body.id === ref, 'Copie de secours envoyée à Netlify Forms');
     ok(netl.length === 1 && !('capture_b64' in netl[0].body), 'La copie Netlify n’embarque pas l’image');
-    ok(await page.evaluate(() => !localStorage.getItem('cassivi-mb-brouillon-v1') && !!localStorage.getItem('cassivi-mb-candidature-v1')), 'Brouillon effacé, candidature mémorisée sur l’appareil');
+    ok(await page.evaluate(() => !localStorage.getItem('cassivi-mb-brouillon-v1') && !!localStorage.getItem('cassivi-mb-inscription-v1')), 'Brouillon effacé, inscription mémorisée sur l’appareil');
     ok(page._logs.length === 0, 'Aucune erreur console ni blocage CSP' + (page._logs.length ? ' : ' + page._logs.join(' | ') : ''));
 
     // fichier agenda
@@ -208,9 +208,9 @@ const isId = id => new Function('return document.activeElement && document.activ
     ok(/DTSTART:20261128T050000Z/.test(ics) && /DTSTART:20261130T050000Z/.test(ics) && (ics.match(/BEGIN:VEVENT/g) || []).length === 2, 'Fichier .ics : deux journées, 8h heure de Madagascar');
     ok(ics.split('\r\n').every(l => Buffer.byteLength(l, 'utf8') <= 75), 'Fichier .ics : lignes repliées à 75 octets');
 
-    // retour sur la page après candidature
+    // retour sur la page après l’inscription
     await page.goto(BASE, { waitUntil: 'networkidle' });
-    ok(await page.isVisible('#notice-deja'), 'Au retour, rappel « Vous avez déjà envoyé une candidature »');
+    ok(await page.isVisible('#notice-deja'), 'Au retour, rappel « Vous êtes déjà inscrit(e) »');
     await ctx.close();
   }
 
@@ -223,12 +223,12 @@ const isId = id => new Function('return document.activeElement && document.activ
     const sw = await page.evaluate(() => document.documentElement.scrollWidth);
     ok(sw <= 390, 'Pas de défilement horizontal (largeur ' + sw + ')');
     const ctaBox = await page.locator('.hero__ctas .btn--primary').boundingBox();
-    ok(ctaBox && ctaBox.y + ctaBox.height <= 844, 'Bouton « Déposer ma candidature » visible sans défiler (bas à ' + Math.round(ctaBox.y + ctaBox.height) + ' px)');
+    ok(ctaBox && ctaBox.y + ctaBox.height <= 844, 'Bouton « Réserver ma place » visible sans défiler (bas à ' + Math.round(ctaBox.y + ctaBox.height) + ' px)');
     ok(!(await page.evaluate(() => document.getElementById('sticky-cta').classList.contains('is-visible'))), 'Barre d’action masquée en haut de page');
     await page.evaluate(() => window.scrollTo(0, document.querySelector('#programme').offsetTop + 200));
     await page.waitForTimeout(500);
     ok(await page.evaluate(() => document.getElementById('sticky-cta').classList.contains('is-visible')), 'Barre d’action visible dans le programme');
-    await page.evaluate(() => window.scrollTo(0, document.querySelector('#candidature').offsetTop + 100));
+    await page.evaluate(() => window.scrollTo(0, document.querySelector('#reservation').offsetTop + 100));
     await page.waitForTimeout(500);
     ok(!(await page.evaluate(() => document.getElementById('sticky-cta').classList.contains('is-visible'))), 'Barre d’action masquée pendant le formulaire');
     // images différées
@@ -280,13 +280,13 @@ const isId = id => new Function('return document.activeElement && document.activ
       t = t.replace("mobileMoney: [", "mobileMoney: [{ service: 'MVola', numero: '034 00 000 01', titulaire: 'CASSIVI DIGITAL MG' }, { service: 'Orange Money', numero: '032 00 000 02', titulaire: 'CASSIVI DIGITAL MG' },");
       route.fulfill({ response: r, body: t });
     });
-    await b.page.addInitScript(() => localStorage.setItem('cassivi-mb-candidature-v1', JSON.stringify({ id: 'MB-7K3Q9P', prenom: 'Hanta', nom: 'Rakoto', email: 'h@x.mg', acompte: 'plus_tard', op: 'Orange Money', at: Date.now() })));
+    await b.page.addInitScript(() => localStorage.setItem('cassivi-mb-inscription-v1', JSON.stringify({ id: 'MB-7K3Q9P', prenom: 'Hanta', nom: 'Rakoto', email: 'h@x.mg', acompte: 'plus_tard', op: 'Orange Money', at: Date.now() })));
     await b.page.goto(BASE + '?ref=MB-7K3Q9P#paiement', { waitUntil: 'networkidle' });
     await b.page.waitForTimeout(300);
     const items = await b.page.$$eval('#paiement .mm li', els => els.map(e => e.textContent));
     ok(items.length === 2 && /034 00 000 01/.test(items[0]), 'Numéros Mobile Money de config.js affichés');
     ok(/Conseillé/.test(items[1]), 'Orange Money conseillé pour un numéro 032');
-    ok(/Bonjour Hanta/.test(await b.page.textContent('#paiement')), 'Accueil personnalisé (candidature mémorisée)');
+    ok(/Bonjour Hanta/.test(await b.page.textContent('#paiement')), 'Accueil personnalisé (inscription mémorisée)');
     await b.page.screenshot({ path: path.join(SHOTS, 'C2_paiement_avec_numeros.png') });
     await b.ctx.close();
   }
@@ -305,7 +305,7 @@ const isId = id => new Function('return document.activeElement && document.activ
       set('prenom', 'Test'); set('nom', 'Echec'); set('email', 'test@example.com'); set('whatsapp', '0331122233'); set('ville', 'Tana');
       set('profil', 'salarie'); set('niveau_meta', 'jamais'); set('niveau_google', 'aucune'); set('tracking', 'non'); set('ia', 'jamais'); set('budget', 'aucun');
       set('objectif', 'poste'); set('attentes', ['kpi']); set('presence', 'oui'); set('laptop', 'non'); set('visa', 'oui'); set('source', 'bouche'); set('acompte', 'plus_tard'); set('consent', 'oui');
-      document.getElementById('form-candidature').dispatchEvent(new Event('change', { bubbles: true }));
+      document.getElementById('form-inscription').dispatchEvent(new Event('change', { bubbles: true }));
     });
     await page.evaluate(() => { window.__start = Date.now(); });
     for (let i = 0; i < 5; i++) { await page.click('#btn-next'); await page.waitForTimeout(350); }
@@ -313,7 +313,7 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.click('#btn-submit');
     await page.waitForSelector('#send-error:not([hidden])', { timeout: 10000 });
     ok(true, 'Message d’erreur affiché si Make et Netlify sont injoignables');
-    ok(await page.isVisible('#send-error a.btn--wa'), 'Solution de secours : candidature par WhatsApp pré-remplie');
+    ok(await page.isVisible('#send-error a.btn--wa'), 'Solution de secours : inscription par WhatsApp pré-remplie');
     await page.screenshot({ path: path.join(SHOTS, 'D1_erreur_envoi.png') });
     mode = 'ok';
     await page.click('#retry');
@@ -334,10 +334,35 @@ const isId = id => new Function('return document.activeElement && document.activ
       route.fulfill({ response: r, body: t });
     });
     await page.goto(BASE, { waitUntil: 'networkidle' });
-    ok(await page.isHidden('#form-candidature') && await page.isVisible('#closed'), 'Formulaire remplacé par le message « Inscriptions closes »');
+    ok(await page.isHidden('#form-inscription') && await page.isVisible('#closed'), 'Formulaire remplacé par le message « Inscriptions closes »');
     await ctx.close();
   }
 
+
+  /* ---------------------------------------------------------------- F. contenu v2 : vocabulaire, appels à l’action, contact */
+  console.log('F. Contenu v2 : « Réserver ma place », couleur du bouton, contact WhatsApp');
+  {
+    const { ctx, page } = await newPage(browser, { viewport: { width: 1440, height: 900 } });
+    await page.goto(BASE, { waitUntil: 'networkidle' });
+    const text = await page.evaluate(() => document.body.innerText + ' ' + document.title + ' ' + document.querySelector('meta[name=description]').content);
+    ok(!/candidat/i.test(text), 'Aucune mention de « candidature » sur la page');
+    ok(/Media\s*Buyer\s*Freelance/.test(await page.textContent('h1')), 'Titre principal : « Formation Media Buyer Freelance pilotée par l’IA »');
+    const ctas = await page.$$eval('a[href="#reservation"].btn--primary', els => els.map(e => e.textContent.trim()));
+    ok(ctas.length >= 8 && ctas.every(t => /^Réserver/.test(t)), ctas.length + ' boutons « Réserver ma place » répartis dans la page');
+    const sections = await page.$$eval('a[href="#reservation"][data-cta]', els => [...new Set(els.map(e => e.getAttribute('data-cta')))]);
+    ok(['topbar', 'hero', 'programme', 'ia', 'pour-qui', 'tarif', 'faq', 'final', 'sticky'].every(k => sections.includes(k)), 'Bouton présent dans : ' + sections.join(', '));
+    const bg = await page.$eval('.hero .btn--primary', e => getComputedStyle(e).backgroundColor);
+    ok(bg === 'rgb(255, 200, 61)', 'Bouton principal jaune vif (' + bg + ')');
+    const wa = await page.$eval('.contact-card a.btn--wa', e => e.href);
+    ok(/^https:\/\/wa\.me\/261375975512\?text=/.test(wa), 'FAQ : bouton WhatsApp wa.me/261375975512 avec message pré-rempli');
+    ok(await page.isVisible('.contact-card a[href="tel:+261375975512"]') && await page.isVisible('.contact-card a[href^="mailto:"]'), 'FAQ : téléphone et e-mail cliquables');
+    ok(/350\s?000\s?Ar/.test(await page.textContent('.price-card__price')), 'Carte tarif : 350 000 Ar, avec bouton de réservation');
+    await page.click('.hero .btn--primary'); await page.waitForTimeout(800);
+    const top = await page.$eval('#reservation', e => Math.round(e.getBoundingClientRect().top));
+    ok(top >= 0 && top < 140, 'Le bouton du hero amène au formulaire de réservation (haut à ' + top + ' px)');
+    ok(page._logs.length === 0, 'Aucune erreur console' + (page._logs.length ? ' : ' + page._logs.join(' | ') : ''));
+    await ctx.close();
+  }
   await browser.close();
   console.log('\n' + passes + ' vérifications réussies, ' + failures + ' en échec.');
   process.exit(failures ? 1 : 0);

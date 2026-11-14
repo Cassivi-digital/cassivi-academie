@@ -1,7 +1,7 @@
 # DESIGN.md · CASSIVI DIGITAL MG · Landing « Media Buyer pilotée par l’IA »
 
 Direction : **institutionnel premium, clair et rassurant**, comme la page d’inscription d’une école de formation internationale.
-Fonds clairs et aérés, bandeaux bleu nuit pour les moments forts, une seule couleur d’action (bleu), l’or réservé aux détails.
+Fonds clairs et aérés, bandeaux bleu nuit pour les moments forts. L’action principale, « Réserver ma place », est en **jaune vif** : on la voit d’un coup d’œil, sur fond clair comme sur fond bleu nuit, et on la retrouve dans chaque section. L’or reste réservé aux détails.
 
 Les choix partent de l’identité déjà en place (logo, vidéos pub, e-mails automatiques), pas de sites de référence :
 les outils UXKIN n’étaient pas connectés.
@@ -22,7 +22,10 @@ Les valeurs vivent dans `site/assets/css/style.css` (`:root`). Les pages utilise
 | `--line-strong` | `#C5CFE0` | Bordures des champs |
 | `--bg` | `#F4F6FB` | Fond des sections claires |
 | `--surface` | `#FFFFFF` | Cartes, formulaire |
-| `--primary` | `#1E5BFF` | **Action** : boutons principaux, liens, focus, étape active (5,3 : 1 sur blanc) |
+| `--cta` | `#FFC83D` | **Action principale** : « Réserver ma place », « Continuer », envoi (texte `--cta-ink`, 10,9 : 1) |
+| `--cta-hover` | `#FFB81F` | Survol de l’action principale |
+| `--cta-ink` | `#0A1B3F` | Texte des boutons jaunes |
+| `--primary` | `#1E5BFF` | **Interaction** : liens, focus, choix sélectionné, progression (5,3 : 1 sur blanc) |
 | `--primary-hover` | `#1748CC` | Survol et appui |
 | `--primary-soft` | `#EEF3FF` | Fond des choix sélectionnés |
 | `--gold` | `#B8914A` | Accent décoratif : filets, puces, numéros (jamais pour du petit texte sur blanc) |
@@ -32,7 +35,7 @@ Les valeurs vivent dans `site/assets/css/style.css` (`:root`). Les pages utilise
 | `--danger` | `#C81E1E` | Astérisque des champs obligatoires, erreurs (5,7 : 1 sur blanc) |
 | `--warning-bg` | `#FFF7E6` | Encadrés d’avertissement (texte `--ink`) |
 
-Règles : un seul bleu d’action. Le vert ne sert qu’à WhatsApp et aux validations, le rouge qu’aux champs obligatoires et aux erreurs.
+Règles : jaune vif pour l’action principale, bleu pour l’interaction (liens, sélection, focus). Le vert ne sert qu’à WhatsApp et aux validations, le rouge qu’aux champs obligatoires et aux erreurs.
 Aucun dégradé violet ni texte en dégradé. Le seul halo est un léger éclat bleu dans le hero.
 
 ## Typographie
@@ -70,7 +73,7 @@ Ombres (deux seulement) :
 ## Composants
 
 - **Boutons**
-  - Principal : bleu, texte blanc, 52 px de haut, rayon 12.
+  - Principal : jaune vif `--cta`, texte bleu nuit gras, 52 px de haut (62 px en version XL), rayon 12, ombre dorée et liseré bas pour le relief.
   - Secondaire : bordure `--line-strong`, texte `--ink`.
   - Discret : lien souligné.
   - WhatsApp : vert `--success` avec l’icône.
@@ -85,7 +88,10 @@ Ombres (deux seulement) :
 - **Cartes de choix** (radio et case à cocher) : carte entière cliquable, puce ronde ou carrée, titre et précision. Une fois sélectionnée : bordure 2 px bleue et fond `--primary-soft`.
 - **Stepper** : 5 étapes numérotées et une étape de vérification. Barre de progression sur mobile, libellés complets à partir de 900 px.
 - **Cartes** : blanches, bordure `--line`, rayon 18, `--shadow-sm`. Pas de grilles de trois cartes identiques : les contenus varient en taille et en forme.
-- **Navigation** : barre fine et collante (logo, date de session, WhatsApp, « Candidater »).
+- **Navigation** : barre fine et collante (logo, liens de section, date de session, WhatsApp, « Réserver ma place »).
+- **Appels à l’action** : un bouton « Réserver ma place » dans chaque section (hero, programme, IA, pour qui, tarif, FAQ, bandeau final), dans la barre du haut et dans la barre mobile.
+- **Carte tarif** : fond bleu nuit, prix en Montserrat 800, liste de ce qui est inclus, bouton jaune et lien WhatsApp.
+- **Carte contact (FAQ)** : bouton WhatsApp wa.me/261375975512 avec message pré-rempli, téléphone, e-mail et bouton de réservation.
 - **Pied de page** : bleu nuit, coordonnées, mention sur les marques, données personnelles.
 
 ## Images et icônes
