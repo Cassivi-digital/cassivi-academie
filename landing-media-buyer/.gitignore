@@ -3,7 +3,6 @@ make/parametres.json
 make/blueprint.json
 make/apercus_emails/02_alerte-admin.html
 ACCES_PRIVES.txt
-make/sauvegardes/
 
 # Fichiers générés par les tests et livrables
 outils/tests/netlify_posts.jsonl
