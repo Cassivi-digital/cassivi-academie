@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+  @font-face { font-family: "Inter"; src: url("../site/assets/fonts/inter-var-latin.woff2") format("woff2"); font-weight: 100 900; }
+  @font-face { font-family: "Montserrat"; src: url("../site/assets/fonts/montserrat-var-latin.woff2") format("woff2"); font-weight: 100 900; }
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #0A1B3F; color: #fff; font-family: "Inter", sans-serif; position: relative; }
+  .glow { position: absolute; inset: 0; background: radial-gradient(55% 75% at 92% 0%, rgba(30,91,255,.38), transparent 70%), radial-gradient(40% 60% at 0% 100%, rgba(184,145,74,.2), transparent 70%); }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 70% 90% at 30% 40%, #000 25%, transparent 75%); }
+  .gold { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, #B8914A, #E2C88E); }
+  .left { position: absolute; left: 64px; top: 52px; width: 680px; }
+  .brand { display: flex; align-items: center; gap: 16px; font-family: "Montserrat"; font-weight: 800; font-size: 24px; letter-spacing: .01em; }
+  .brand img { width: 64px; height: 64px; border-radius: 50%; }
+  .eyebrow { margin-top: 36px; font-size: 18px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #E2C88E; display: flex; align-items: center; gap: 12px; }
+  .eyebrow::before { content: ""; width: 34px; height: 3px; background: #B8914A; border-radius: 2px; }
+  h1 { margin: 16px 0 0; font-family: "Montserrat"; font-weight: 800; font-size: 60px; line-height: 1.04; letter-spacing: -.02em; }
+  h1 span { color: #E2C88E; }
+  .meta { margin-top: 22px; font-size: 24px; line-height: 1.4; color: #D6DEEE; font-weight: 500; }
+  .meta b { color: #fff; font-weight: 700; }
+  .chips { margin-top: 24px; display: flex; gap: 10px; flex-wrap: nowrap; }
+  .chip { white-space: nowrap; padding: 9px 16px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06); font-size: 19px; font-weight: 600; }
+  .chip--gold { border-color: rgba(226,200,142,.6); color: #E2C88E; background: rgba(226,200,142,.08); }
+  .photo { position: absolute; right: 56px; top: 64px; width: 380px; height: 494px; border-radius: 28px; overflow: hidden; border: 1.5px solid rgba(255,255,255,.18); box-shadow: 0 40px 80px -30px rgba(0,0,0,.7); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 38% 50%; }
+  .photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(5,12,30,.75)); }
+  .photo .cap { position: absolute; left: 22px; right: 22px; bottom: 20px; z-index: 1; font-size: 17px; font-weight: 600; color: #fff; }
+  .photo .cap small { display: block; font-size: 14px; font-weight: 500; color: #AEB9D0; margin-top: 2px; }
+</style></head>
+<body>
+  <div class="glow"></div><div class="grid"></div>
+  <div class="left">
+    <div class="brand"><img src="logo-badge-192.png" alt="">CASSIVI DIGITAL MG</div>
+    <div class="eyebrow">Formation en salle · Antananarivo</div>
+    <h1>Formation<br>Media Buyer<br><span>pilotée par l’IA</span></h1>
+    <div class="meta"><b>Samedi 28 &amp; lundi 30 novembre</b><br>8h – 17h · Antsakaviro · puis 1 mois de suivi</div>
+    <div class="chips"><span class="chip">Meta Ads</span><span class="chip">Google Ads</span><span class="chip">Tracking &amp; KPI</span><span class="chip chip--gold">Places limitées</span></div>
+  </div>
+  <div class="photo"><img src="../site/assets/img/classe-1152.webp" alt=""><div class="cap">Sur de vraies campagnes<small>Sessions réelles chez CASSIVI DIGITAL MG</small></div></div>
+  <div class="gold"></div>
+</body></html>
