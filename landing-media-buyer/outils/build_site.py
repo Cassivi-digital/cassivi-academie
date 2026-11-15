@@ -29,7 +29,7 @@ def ver(rel):
     return hashlib.md5(open(os.path.join(SITE, rel), 'rb').read()).hexdigest()[:8]
 
 repl = {'{{SITE_URL}}': SITE_URL, '{{CSS_V}}': ver('assets/css/style.css'),
-        '{{JS_V}}': ver('assets/js/app.js'), '{{CFG_V}}': ver('config.js')}
+        '{{JS_V}}': ver('assets/js/app.js'), '{{CFG_V}}': ver('config.js'), '{{PIXEL_V}}': ver('assets/js/meta-pixel.js')}
 for name in ('index.html', 'merci.html'):
     src = open(os.path.join(HERE, 'src', name), encoding='utf-8').read()
     for k, v in repl.items():

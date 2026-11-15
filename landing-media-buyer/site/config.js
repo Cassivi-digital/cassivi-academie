@@ -29,7 +29,7 @@ window.CASSIVI_CONFIG = {
   ],
 
   // Mesure d’audience (facultatif). Laissez vide pour désactiver.
-  metaPixelId: '1668983478012670',   // Pixel Meta : PageView (visite), Lead (inscription), Contact (clic WhatsApp)
+  metaPixelId: '',   // Pixel Meta déjà installé dans le <head> : assets/js/meta-pixel.js (ID 1668983478012670). Laissez vide ici.
   ga4Id: '',         // exemple : 'G-XXXXXXXXXX'
 
   // Copie de secours de chaque candidature dans Netlify Forms (recommandé).

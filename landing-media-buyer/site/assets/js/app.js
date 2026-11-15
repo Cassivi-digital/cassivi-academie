@@ -88,14 +88,14 @@
       window.gtag('js', new Date()); window.gtag('config', CFG.ga4Id);
       loadScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(CFG.ga4Id));
     }
-    if (CFG.metaPixelId) {
+    if (CFG.metaPixelId && !window.fbq) {   // secours : le Pixel est normalement déjà chargé dans le <head> (meta-pixel.js)
       var n = window.fbq = function () { if (n.callMethod) n.callMethod.apply(n, arguments); else n.queue.push(arguments); };
       if (!window._fbq) window._fbq = n;
       n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
       window.fbq('init', CFG.metaPixelId); window.fbq('track', 'PageView');
       loadScript('https://connect.facebook.net/en_US/fbevents.js');
     }
-    if (CFG.ga4Id || CFG.metaPixelId) { var m = $('#mention-mesure'); if (m) m.hidden = false; }
+    if (CFG.ga4Id || CFG.metaPixelId || window.fbq) { var m = $('#mention-mesure'); if (m) m.hidden = false; }
   }
   function track(name, params) {
     try {

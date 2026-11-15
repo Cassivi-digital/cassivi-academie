@@ -63,7 +63,11 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.goto(BASE + '?utm_source=facebook&utm_medium=cpc&utm_campaign=media-buyer-nov', { waitUntil: 'networkidle' });
     await page.waitForFunction(() => Array.isArray(window.__fbqCalls), null, { timeout: 5000 }).catch(() => {});
     const fb0 = await page.evaluate(() => window.__fbqCalls || []);
-    ok(fb0.some(c => c[0] === 'init' && c[1] === '1668983478012670') && fb0.some(c => c[0] === 'track' && c[1] === 'PageView'), 'Pixel Meta 1668983478012670 : PageView envoyé au chargement');
+    ok(fb0.some(c => c[0] === 'init' && c[1] === '1668983478012670') && fb0.filter(c => c[0] === 'track' && c[1] === 'PageView').length === 1, 'Pixel Meta 1668983478012670 : un seul PageView au chargement');
+    const head = await page.evaluate(() => { const s = [...document.head.querySelectorAll('script[src]')].filter(x => x.src.startsWith(location.origin)); const i = s.findIndex(x => /meta-pixel\.js/.test(x.src)); return { i, sync: i >= 0 && !s[i].defer && !s[i].async, avantApp: i >= 0 && i < s.findIndex(x => /app\.js/.test(x.src)) }; });
+    ok(head.i === 0 && head.sync && head.avantApp, 'Code de base du Pixel dans le <head>, chargé en premier');
+    ok(await page.evaluate(() => [...document.querySelectorAll('body noscript')].some(n => /tr\?id=1668983478012670&(amp;)?ev=PageView/.test(n.textContent))), 'Secours sans JavaScript (noscript) présent');
+    ok(!fb0.some(c => c[1] === 'Lead'), 'Pas d’événement Lead avant l’envoi de l’inscription');
     await page.keyboard.press('Tab');
     ok(/Aller directement au formulaire/.test(await active(page)), 'Le premier Tab atteint le lien d’évitement');
     await page.keyboard.press('Enter');
@@ -320,11 +324,13 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.waitForSelector('#send-error:not([hidden])', { timeout: 10000 });
     ok(true, 'Message d’erreur affiché si Make et Netlify sont injoignables');
     ok(await page.isVisible('#send-error a.btn--wa'), 'Solution de secours : inscription par WhatsApp pré-remplie');
+    ok(!(await page.evaluate(() => window.__fbqCalls || [])).some(c => c[1] === 'Lead'), 'Envoi échoué : aucun événement Lead');
     await page.screenshot({ path: path.join(SHOTS, 'D1_erreur_envoi.png') });
     mode = 'ok';
     await page.click('#retry');
     await page.waitForSelector('#success:not([hidden])', { timeout: 10000 });
     ok(true, 'Le nouvel essai aboutit');
+    ok((await page.evaluate(() => window.__fbqCalls || [])).filter(c => c[0] === 'track' && c[1] === 'Lead').length === 1, 'Nouvel essai réussi : un seul événement Lead');
     ok(/038 48 782 22/.test(await page.textContent('#success')) && /037 59 755 12/.test(await page.textContent('#success')), 'Acompte à régler : numéros MVola et Orange Money sur l’écran de confirmation');
     ok(/indispensable/.test(await page.textContent('#success')), 'Rappel personnalisé : pas d’ordinateur portable');
     ok(page._logs.filter(l => !/ERR_INTERNET_DISCONNECTED|Failed to load resource/.test(l)).length === 0, 'Aucune erreur inattendue');
@@ -371,6 +377,12 @@ const isId = id => new Function('return document.activeElement && document.activ
     ok(og.length >= 2 && og.every(v => v.startsWith('https://media-buyer-ia.netlify.app/')), 'Aperçu du lien sur media-buyer-ia.netlify.app (' + og.length + ' adresses)');
     await page.evaluate(() => { document.addEventListener('click', e => { if (e.target.closest('a[href^="https://wa.me/"]')) e.preventDefault(); }, true); document.querySelector('.contact-card a.btn--wa').click(); });
     ok((await page.evaluate(() => window.__fbqCalls || [])).some(c => c[0] === 'track' && c[1] === 'Contact'), 'Pixel Meta : événement Contact au clic sur WhatsApp');
+    const merci = await ctx.newPage();
+    await merci.goto(BASE + 'merci.html');
+    const mt = await merci.evaluate(() => document.body.innerText + ' ' + document.title + ' ' + [...document.querySelectorAll('a')].map(a => a.href).join(' '));
+    ok(!/candidat/i.test(mt), 'Page merci : « inscription », plus aucune « candidature »');
+    ok(await merci.evaluate(() => [...document.querySelectorAll('noscript')].some(n => /ev=Lead/.test(n.textContent))), 'Page merci : Lead envoyé aussi sans JavaScript');
+    await merci.close();
     ok(page._logs.length === 0, 'Aucune erreur console' + (page._logs.length ? ' : ' + page._logs.join(' | ') : ''));
     await ctx.close();
   }
