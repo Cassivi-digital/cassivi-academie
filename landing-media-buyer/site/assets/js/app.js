@@ -102,6 +102,7 @@
       if (window.gtag) window.gtag('event', name, params || {});
       if (window.fbq) {
         if (name === 'generate_lead') window.fbq('track', 'Lead', { content_name: 'Formation Media Buyer' });
+        else if (name === 'contact_whatsapp') window.fbq('track', 'Contact', { content_name: 'Formation Media Buyer' });
         else window.fbq('trackCustom', name, params || {});
       }
     } catch (e) { /* mesure non bloquante */ }
@@ -881,4 +882,5 @@
     initReturn();
   }
   $$('[data-cta]').forEach(function (a) { a.addEventListener('click', function () { track('cta_click', { position: a.getAttribute('data-cta') }); }); });
+  $$('a[href^="https://wa.me/"]').forEach(function (a) { a.addEventListener('click', function () { track('contact_whatsapp', { position: (a.closest('section, header, footer') || {}).id || 'page' }); }); });
 })();

@@ -13,12 +13,16 @@ const NETLIFY_LOG = path.join(__dirname, 'netlify_posts.jsonl');
 let failures = 0, passes = 0;
 function ok(cond, msg) { if (cond) { passes++; console.log('  ✓ ' + msg); } else { failures++; console.log('  ✗ ' + msg); } }
 
+const FB_STUB = "(function(){var f=window.fbq;window.__fbqCalls=(f&&f.queue?f.queue:[]).map(function(a){return Array.prototype.slice.call(a);});if(f){f.callMethod=function(){window.__fbqCalls.push(Array.prototype.slice.call(arguments));};}})();";
 async function newPage(browser, opts) {
   const ctx = await browser.newContext(Object.assign({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1, locale: 'fr-FR', timezoneId: 'Indian/Antananarivo' }, opts || {}));
   const page = await ctx.newPage();
   page._logs = [];
   page.on('console', m => { if (m.type() === 'error' || /Content Security Policy|Refused to/i.test(m.text())) page._logs.push(m.type() + ': ' + m.text()); });
   page.on('pageerror', e => page._logs.push('pageerror: ' + e.message));
+  // Pixel Meta : fbevents.js remplacé par un enregistreur local (aucun envoi réel à Meta pendant les tests)
+  await page.route('https://connect.facebook.net/**', route => route.fulfill({ status: 200, contentType: 'application/javascript', body: FB_STUB }));
+  await page.route('https://www.facebook.com/**', route => route.fulfill({ status: 200, contentType: 'image/gif', body: Buffer.from('R0lGODlhAQABAAAAACw=', 'base64') }));
   return { ctx, page };
 }
 async function mockMake(page, mode) {
@@ -57,6 +61,9 @@ const isId = id => new Function('return document.activeElement && document.activ
     const { ctx, page } = await newPage(browser);
     const calls = await mockMake(page, 'ok');
     await page.goto(BASE + '?utm_source=facebook&utm_medium=cpc&utm_campaign=media-buyer-nov', { waitUntil: 'networkidle' });
+    await page.waitForFunction(() => Array.isArray(window.__fbqCalls), null, { timeout: 5000 }).catch(() => {});
+    const fb0 = await page.evaluate(() => window.__fbqCalls || []);
+    ok(fb0.some(c => c[0] === 'init' && c[1] === '1668983478012670') && fb0.some(c => c[0] === 'track' && c[1] === 'PageView'), 'Pixel Meta 1668983478012670 : PageView envoyé au chargement');
     await page.keyboard.press('Tab');
     ok(/Aller directement au formulaire/.test(await active(page)), 'Le premier Tab atteint le lien d’évitement');
     await page.keyboard.press('Enter');
@@ -172,6 +179,7 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.waitForSelector('#success:not([hidden])', { timeout: 10000 });
     await page.waitForTimeout(400);
     ok(await page.evaluate(isId('success-titre')), 'Après l’envoi, le focus est sur le titre de confirmation');
+    ok((await page.evaluate(() => window.__fbqCalls || [])).some(c => c[0] === 'track' && c[1] === 'Lead'), 'Pixel Meta : événement Lead envoyé à l’inscription');
     const ref = (await page.textContent('.ticket__ref')).trim();
     ok(/^MB-[A-Z2-9]{6}$/.test(ref), 'Référence affichée : ' + ref);
     await page.screenshot({ path: path.join(SHOTS, 'A4_confirmation.png') });
@@ -358,6 +366,11 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.click('.hero .btn--primary'); await page.waitForTimeout(800);
     const top = await page.$eval('#reservation', e => Math.round(e.getBoundingClientRect().top));
     ok(top >= 0 && top < 140, 'Le bouton du hero amène au formulaire de réservation (haut à ' + top + ' px)');
+    ok(await page.isVisible('#mention-mesure'), 'Mention de mesure d’audience affichée en bas de page');
+    const og = await page.$$eval('meta[property^="og:"], link[rel=canonical]', els => els.map(e => e.content || e.href).filter(v => /^https?:/.test(v)));
+    ok(og.length >= 2 && og.every(v => v.startsWith('https://media-buyer-ia.netlify.app/')), 'Aperçu du lien sur media-buyer-ia.netlify.app (' + og.length + ' adresses)');
+    await page.evaluate(() => { document.addEventListener('click', e => { if (e.target.closest('a[href^="https://wa.me/"]')) e.preventDefault(); }, true); document.querySelector('.contact-card a.btn--wa').click(); });
+    ok((await page.evaluate(() => window.__fbqCalls || [])).some(c => c[0] === 'track' && c[1] === 'Contact'), 'Pixel Meta : événement Contact au clic sur WhatsApp');
     ok(page._logs.length === 0, 'Aucune erreur console' + (page._logs.length ? ' : ' + page._logs.join(' | ') : ''));
     await ctx.close();
   }

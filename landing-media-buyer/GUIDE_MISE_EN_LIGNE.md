@@ -9,7 +9,8 @@ Session des **samedi 28 et lundi 30 novembre 2026** à Antsakaviro. Il faut envi
 | **Page de réservation**, avec un formulaire d’inscription en 5 étapes et une étape de vérification | Prête : `1_A_DEPOSER_SUR_NETLIFY.zip` |
 | **Scénario Make** « Formation Media Buyer 28-30 nov : inscriptions, validation en 1 clic, relances et rappels » (ID 8566781) | **Créé et activé** dans votre compte Make |
 | **Tableau de suivi** Google Sheets « Inscriptions » et « Tableau de bord » | Dans votre Google Drive (lien dans chaque e-mail d’alerte) |
-| **Tests** | 98 vérifications réussies sur ordinateur et mobile, au clavier, en cas d’envoi réussi comme de panne réseau. Accessibilité WCAG 2.2 AA : aucun problème. |
+| **Pixel Meta** `1668983478012670` | **Installé** : PageView (visite), Lead (inscription), Contact (clic WhatsApp) |
+| **Tests** | 103 vérifications réussies sur ordinateur et mobile, au clavier, en cas d’envoi réussi comme de panne réseau, Pixel compris. Accessibilité WCAG 2.2 AA : aucun problème. |
 
 ---
 
@@ -27,21 +28,42 @@ Ouvrez le fichier `config.js` (à la racine du dossier du site) avec le Bloc-not
    - Ils s’affichent dans les instructions de paiement : juste après l’inscription, et sur le lien « Voir les instructions de paiement » de chaque e-mail.
    - Chaque numéro a un bouton « Copier ». La page conseille MVola ou Orange Money selon le numéro de téléphone de l’inscrit.
    - Pour changer un numéro ou un nom, modifiez la ligne, puis redéployez le dossier.
-2. **Facultatif** : Pixel Meta (`metaPixelId`) et Google Analytics 4 (`ga4Id`).
-   - L’événement « Lead » est envoyé à chaque inscription.
-   - Une mention de mesure d’audience s’ajoute alors automatiquement en bas de page.
+2. **Pixel Meta** : déjà installé (`metaPixelId: '1668983478012670'`).
+   - Événements envoyés : **PageView** à chaque visite, **Lead** à chaque inscription envoyée, **Contact** à chaque clic sur un bouton WhatsApp de la page.
+   - La mention de mesure d’audience s’affiche automatiquement en bas de page.
+   - Ne collez pas le code du Pixel dans `index.html` : la page bloque les scripts collés (sécurité), et le Pixel serait compté deux fois.
+   - Google Analytics 4 reste facultatif (`ga4Id`).
 
 ## Étape 2 · Mettre la page sur Netlify (5 min)
 
 1. Décompressez `1_A_DEPOSER_SUR_NETLIFY.zip`.
 2. Sur **app.netlify.com**, ouvrez **Add new site → Deploy manually**, puis glissez le dossier obtenu. C’est celui qui contient `index.html`.
-3. Dans **Site configuration → Change site name**, choisissez **`formation-media-buyer-cassivi`**.
+3. Le site s’appelle **`media-buyer-ia`** (adresse **media-buyer-ia.netlify.app**).
    - Les aperçus Facebook, WhatsApp et LinkedIn (image et titre) pointent vers cette adresse.
-   - Autre nom ? Dans `index.html`, remplacez les 4 occurrences de `formation-media-buyer-cassivi.netlify.app`.
+   - Autre nom ? Dans `index.html`, remplacez les 4 occurrences de `media-buyer-ia.netlify.app`.
 4. Activez la **copie de secours** des inscriptions :
    - **Forms → Enable form detection**, puis glissez à nouveau le dossier dans **Deploys**.
    - Ensuite, dans **Forms → Form notifications**, ajoutez un e-mail vers cassividigitalmg@gmail.com.
 5. **Modifier la page plus tard** : changez le fichier, puis glissez à nouveau le dossier dans **Deploys**.
+
+## Pixel Meta · mettre à jour et vérifier (10 min)
+
+**1. Mettre en ligne la page avec le Pixel**
+- Sur **app.netlify.com**, ouvrez le site **media-buyer-ia** (votre site actuel, pas un nouveau), puis l’onglet **Deploys**.
+- Glissez le dossier décompressé de `1_A_DEPOSER_SUR_NETLIFY.zip` dans la zone de dépôt. L’adresse ne change pas : la publicité en cours en profite immédiatement.
+
+**2. Vérifier le Pixel**
+- **Meta Pixel Helper** (extension Chrome) : ouvrez media-buyer-ia.netlify.app. L’extension doit afficher le Pixel `1668983478012670` avec l’événement **PageView**.
+- **Gestionnaire d’événements** (business.facebook.com/events_manager) → votre Pixel → **Tester les événements** :
+  1. Saisissez `https://media-buyer-ia.netlify.app` et ouvrez le site.
+  2. **PageView** doit apparaître dans les secondes qui suivent.
+  3. Cliquez sur un bouton WhatsApp : **Contact** apparaît.
+  4. Faites une inscription test : **Lead** apparaît. Supprimez ensuite la ligne de test dans le tableau.
+
+**3. Brancher le Pixel sur la publicité (Gestionnaire de publicités)**
+- **Ensemble de publicités** : objectif **Prospects**, lieu de conversion **Site web**, Pixel `1668983478012670`, événement de conversion **Prospect (Lead)**.
+- **Publicité** → section **Suivi** → **Événements du site web** : cochez le Pixel.
+- Modifier une publicité en cours la renvoie en examen chez Meta. Le Pixel mesure de toute façon les visites de toutes les publicités qui mènent à la page.
 
 ## Étape 3 · Programmer l’appel quotidien (3 min)
 

@@ -8,7 +8,7 @@ import hashlib, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SITE = os.path.join(ROOT, 'site')
-SITE_URL = (sys.argv[1] if len(sys.argv) > 1 else 'https://formation-media-buyer-cassivi.netlify.app').rstrip('/')
+SITE_URL = (sys.argv[1] if len(sys.argv) > 1 else 'https://media-buyer-ia.netlify.app').rstrip('/')
 
 NBSP, NNBSP = ' ', ' '
 
