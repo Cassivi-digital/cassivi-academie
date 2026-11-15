@@ -11,8 +11,10 @@ Visuels fixes pour le fil d'actualité Facebook et Instagram : **1080 × 1350 px
 
 Changements par rapport à la première version :
 - le tarif devient une ligne discrète ;
-- les dates sont mises en avant (samedi 28 et dimanche 29 novembre 2026) ;
-- ajout du bouton, du WhatsApp 037 59 755 12 et de la mention « RÉSERVATION OBLIGATOIRE – PLACES TRÈS LIMITÉES » ;
+- les dates sont mises en avant (samedi 28 et lundi 30 novembre 2026, comme sur la landing) ;
+- ajout de « Pour devenir freelance · entrepreneurs · e-commerçants avec boutique » et de « Acquisition du premier client incluse » ;
+- ajout du bouton « Réservez votre place » et du WhatsApp 037 59 755 12 avec le logo WhatsApp vert ;
+- ajout de la mention « RÉSERVATION OBLIGATOIRE – PLACES TRÈS LIMITÉES » ;
 - ombres allégées.
 
 Les photos et le logo n'ont pas changé : ce sont les mêmes fichiers, aux mêmes pixels, dans `images/`.
@@ -31,7 +33,3 @@ Première version (pour mémoire) : `export/…_V1_Formateur.png` et `export/…
 Pour rendre les deux PNG à partir de `images/`, lancez `./src/exporter.sh` (il faut Chromium/Playwright et Pillow). Ce script ne touche pas aux photos.
 
 `python3 src/prep_photos.py` refait les photos à partir des originaux. Il écrit dans `build/`, et il faut ensuite recopier les fichiers dans `images/`.
-
-## À vérifier
-
-Les visuels affichent **samedi 28 et dimanche 29 novembre 2026**, comme demandé. Or la landing, les e-mails automatiques, les rappels et les liens d'agenda annoncent toujours **lundi 30 novembre**. Il faut aligner ces dates avant de publier.

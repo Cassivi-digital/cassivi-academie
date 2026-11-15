@@ -48,9 +48,17 @@ h1 em { font-style: normal; color: var(--blue); }
   box-shadow: 0 10px 18px -14px rgb(30 91 255 / .9); }
 .cta svg { width: 26px; height: 26px; }
 .wa { display: inline-flex; align-items: center; gap: 10px; font-size: 25px; white-space: nowrap; color: var(--navy); }
-.wa svg { width: 27px; height: 27px; color: var(--navy); }
+.wa svg { width: 34px; height: 34px; flex: none; }
 .wa span { font-weight: 600; color: #5C6B86; }
 .wa b { font-weight: 800; letter-spacing: .01em; }
 
 .band { position: absolute; left: 0; right: 0; bottom: 0; height: 66px; background: var(--navy); color: #fff;
   display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 23px; letter-spacing: .12em; white-space: nowrap; }
+
+/* Pour qui + acquisition du premier client */
+.points { list-style: none; margin-top: 18px; display: grid; gap: 10px; }
+.points li { display: flex; align-items: center; gap: 12px; font-size: 25px; font-weight: 600; color: var(--navy); white-space: nowrap; }
+.points svg { width: 30px; height: 30px; flex: none; }
+.points b { font-weight: 800; }
+.points i { font-style: normal; color: #9AA8C2; padding: 0 .35em; }
+.points em { font-style: normal; color: var(--blue); }
