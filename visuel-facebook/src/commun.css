@@ -1,0 +1,35 @@
+/* Visuels Facebook 4:5 (1080 × 1350) · CASSIVI DIGITAL MG · MEDIA BUYER IA
+   Couleurs issues du logo : bleu nuit, bleu électrique, cyan, blanc. */
+@font-face { font-family: 'Montserrat'; src: url('../../landing-media-buyer/site/assets/fonts/montserrat-var-latin.woff2') format('woff2'); font-weight: 100 900; }
+@font-face { font-family: 'Inter'; src: url('../../landing-media-buyer/site/assets/fonts/inter-var-latin.woff2') format('woff2'); font-weight: 100 900; }
+
+:root {
+  --navy: #0B1B3F;
+  --navy-2: #12275A;
+  --blue: #1E5BFF;
+  --cyan: #22A8E8;
+  --ink-2: #33415C;
+  --tint: #F2F6FF;
+  --line: #D9E3F7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1350px; overflow: hidden; background: #fff; }
+body { font-family: 'Inter', sans-serif; color: var(--navy); -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+.canvas { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: #fff; }
+
+/* Logo : le badge rond officiel (logo réel, détouré en cercle) + le nom, comme sur la landing */
+.brand { display: inline-flex; align-items: center; gap: 16px; }
+.brand img { display: block; border-radius: 50%; box-shadow: 0 2px 6px rgb(11 27 63 / .25); }
+.brand span { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: .01em; color: var(--navy); white-space: nowrap; }
+
+/* Étiquette « inscriptions ouvertes » */
+.live { display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 26px 0 22px; border-radius: 999px;
+  background: var(--navy); color: #fff; font-weight: 800; font-size: 21px; letter-spacing: .12em; white-space: nowrap; }
+.live i { width: 14px; height: 14px; border-radius: 50%; background: #3CC8FF; box-shadow: 0 0 0 5px rgb(60 200 255 / .25); }
+
+h1 { font-family: 'Montserrat', sans-serif; font-weight: 800; line-height: .98; letter-spacing: -.025em; color: var(--navy); white-space: nowrap; }
+h1 em { font-style: normal; color: var(--blue); }
+.sub { font-weight: 500; color: var(--ink-2); letter-spacing: -.005em; }
+.topics { font-weight: 700; color: var(--navy); white-space: nowrap; }
+.topics b { color: var(--blue); font-weight: 800; padding: 0 .38em; }
+.price { font-family: 'Montserrat', sans-serif; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; line-height: 1; }
