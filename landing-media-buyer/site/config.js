@@ -20,12 +20,11 @@ window.CASSIVI_CONFIG = {
   acompte: 50000,
   solde: 300000,
 
-  // >>> À COMPLÉTER : numéros Mobile Money qui reçoivent l’acompte.
-  // Tant que la liste est vide, la page invite le candidat à demander le numéro sur WhatsApp.
-  // Retirez les « // » devant chaque ligne utilisée et remplacez les numéros et les noms.
+  // Numéros Mobile Money qui reçoivent l’acompte (affichés dans les instructions de paiement).
+  // Pour ajouter un service, retirez les « // » devant sa ligne et remplacez le numéro et le nom.
   mobileMoney: [
-    // { service: 'MVola',        numero: '034 00 000 00', titulaire: 'Nom du titulaire' },
-    // { service: 'Orange Money', numero: '032 00 000 00', titulaire: 'Nom du titulaire' },
+    { service: 'MVola',        numero: '038 48 782 22', titulaire: 'RAMAMONJISOA' },
+    { service: 'Orange Money', numero: '037 59 755 12', titulaire: 'Andrianambinina Sitraka' },
     // { service: 'Airtel Money', numero: '033 00 000 00', titulaire: 'Nom du titulaire' },
   ],
 

@@ -268,24 +268,22 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.waitForTimeout(300);
     ok(await page.isVisible('#paiement'), 'Panneau de paiement affiché');
     ok(/MB-7K3Q9P/.test(await page.textContent('#paiement')), 'Référence reprise dans le panneau');
-    ok(/Recevoir le numéro Mobile Money/.test(await page.textContent('#paiement')), 'Sans numéros configurés : demande du numéro sur WhatsApp');
+    const payTxt = await page.textContent('#paiement');
+    ok(/MVola\s*038 48 782 22/.test(payTxt) && /RAMAMONJISOA/.test(payTxt), 'MVola 038 48 782 22 au nom de RAMAMONJISOA affiché');
+    ok(/Orange Money\s*037 59 755 12/.test(payTxt) && /Andrianambinina Sitraka/.test(payTxt), 'Orange Money 037 59 755 12 au nom d’Andrianambinina Sitraka affiché');
+    ok(await page.$$eval('#paiement .mm li [data-copy]', els => els.map(e => e.getAttribute('data-copy')).join(',')) === '0384878222,0375975512', 'Boutons « Copier » des deux numéros');
     const wa = await page.getAttribute('#paiement a.btn--wa', 'href');
-    ok(/wa\.me\/261375975512\?text=.*MB-7K3Q9P/.test(decodeURIComponent(wa)), 'Message WhatsApp pré-rempli avec la référence');
-    await page.screenshot({ path: path.join(SHOTS, 'C1_paiement_sans_numeros.png') });
+    ok(/wa\.me\/261375975512\?text=.*MB-7K3Q9P/.test(decodeURIComponent(wa)), 'Bouton « J’ai payé : envoyer ma preuve » pré-rempli avec la référence');
+    await page.screenshot({ path: path.join(SHOTS, 'C1_paiement_numeros.png') });
     await ctx.close();
 
     const b = await newPage(browser, { viewport: { width: 390, height: 844 } });
-    await b.page.route('**/config.js*', async route => {
-      const r = await route.fetch(); let t = await r.text();
-      t = t.replace("mobileMoney: [", "mobileMoney: [{ service: 'MVola', numero: '034 00 000 01', titulaire: 'CASSIVI DIGITAL MG' }, { service: 'Orange Money', numero: '032 00 000 02', titulaire: 'CASSIVI DIGITAL MG' },");
-      route.fulfill({ response: r, body: t });
-    });
     await b.page.addInitScript(() => localStorage.setItem('cassivi-mb-inscription-v1', JSON.stringify({ id: 'MB-7K3Q9P', prenom: 'Hanta', nom: 'Rakoto', email: 'h@x.mg', acompte: 'plus_tard', op: 'Orange Money', at: Date.now() })));
     await b.page.goto(BASE + '?ref=MB-7K3Q9P#paiement', { waitUntil: 'networkidle' });
     await b.page.waitForTimeout(300);
     const items = await b.page.$$eval('#paiement .mm li', els => els.map(e => e.textContent));
-    ok(items.length === 2 && /034 00 000 01/.test(items[0]), 'Numéros Mobile Money de config.js affichés');
-    ok(/Conseillé/.test(items[1]), 'Orange Money conseillé pour un numéro 032');
+    ok(items.length === 2 && /038 48 782 22/.test(items[0]) && /037 59 755 12/.test(items[1]), 'Les deux numéros Mobile Money de config.js sont listés');
+    ok(/Conseillé/.test(items[1]) && !/Conseillé/.test(items[0]), 'Orange Money conseillé pour un numéro Orange');
     ok(/Bonjour Hanta/.test(await b.page.textContent('#paiement')), 'Accueil personnalisé (inscription mémorisée)');
     await b.page.screenshot({ path: path.join(SHOTS, 'C2_paiement_avec_numeros.png') });
     await b.ctx.close();
@@ -319,7 +317,7 @@ const isId = id => new Function('return document.activeElement && document.activ
     await page.click('#retry');
     await page.waitForSelector('#success:not([hidden])', { timeout: 10000 });
     ok(true, 'Le nouvel essai aboutit');
-    ok(/Recevoir le numéro Mobile Money/.test(await page.textContent('#success')), 'Acompte à régler : instructions de paiement sur l’écran de confirmation');
+    ok(/038 48 782 22/.test(await page.textContent('#success')) && /037 59 755 12/.test(await page.textContent('#success')), 'Acompte à régler : numéros MVola et Orange Money sur l’écran de confirmation');
     ok(/indispensable/.test(await page.textContent('#success')), 'Rappel personnalisé : pas d’ordinateur portable');
     ok(page._logs.filter(l => !/ERR_INTERNET_DISCONNECTED|Failed to load resource/.test(l)).length === 0, 'Aucune erreur inattendue');
     await ctx.close();

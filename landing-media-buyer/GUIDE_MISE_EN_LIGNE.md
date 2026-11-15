@@ -9,22 +9,24 @@ Session des **samedi 28 et lundi 30 novembre 2026** à Antsakaviro. Il faut envi
 | **Page de réservation**, avec un formulaire d’inscription en 5 étapes et une étape de vérification | Prête : `1_A_DEPOSER_SUR_NETLIFY.zip` |
 | **Scénario Make** « Formation Media Buyer 28-30 nov : inscriptions, validation en 1 clic, relances et rappels » (ID 8566781) | **Créé et activé** dans votre compte Make |
 | **Tableau de suivi** Google Sheets « Inscriptions » et « Tableau de bord » | Dans votre Google Drive (lien dans chaque e-mail d’alerte) |
-| **Tests** | 86 vérifications réussies sur ordinateur et mobile, au clavier, en cas d’envoi réussi comme de panne réseau. Accessibilité WCAG 2.2 AA : aucun problème. |
+| **Tests** | 98 vérifications réussies sur ordinateur et mobile, au clavier, en cas d’envoi réussi comme de panne réseau. Accessibilité WCAG 2.2 AA : aucun problème. |
 
 ---
 
-## Étape 1 · Compléter `config.js` (5 min)
+## Étape 1 · Vérifier `config.js` (2 min)
 
 Ouvrez le fichier `config.js` (à la racine du dossier du site) avec le Bloc-notes.
 
-1. **Numéros Mobile Money** pour l’acompte. Retirez les `//` en début de ligne et remplacez les numéros et les noms :
+1. **Numéros Mobile Money** pour l’acompte : ils sont déjà remplis.
    ```js
    mobileMoney: [
-     { service: 'MVola',        numero: '034 xx xxx xx', titulaire: 'Votre nom' },
-     { service: 'Orange Money', numero: '032 xx xxx xx', titulaire: 'Votre nom' },
+     { service: 'MVola',        numero: '038 48 782 22', titulaire: 'RAMAMONJISOA' },
+     { service: 'Orange Money', numero: '037 59 755 12', titulaire: 'Andrianambinina Sitraka' },
    ],
    ```
-   Tant que la liste reste vide, la page invite les inscrits à vous demander le numéro sur WhatsApp, avec leur référence. Rien n’est bloqué.
+   - Ils s’affichent dans les instructions de paiement : juste après l’inscription, et sur le lien « Voir les instructions de paiement » de chaque e-mail.
+   - Chaque numéro a un bouton « Copier ». La page conseille MVola ou Orange Money selon le numéro de téléphone de l’inscrit.
+   - Pour changer un numéro ou un nom, modifiez la ligne, puis redéployez le dossier.
 2. **Facultatif** : Pixel Meta (`metaPixelId`) et Google Analytics 4 (`ga4Id`).
    - L’événement « Lead » est envoyé à chaque inscription.
    - Une mention de mesure d’audience s’ajoute alors automatiquement en bas de page.
@@ -77,7 +79,7 @@ Vous pouvez aussi écrire « Place confirmée » dans la colonne **Statut** du t
   - l’e-mail d’accusé de réception côté participant ;
   - l’alerte côté administrateur.
 - [ ] Dans l’alerte, cliquez **Valider la place** : vous recevez l’e-mail de confirmation.
-- [ ] Ouvrez le lien « Voir les instructions de paiement » d’un e-mail : le panneau de paiement s’affiche avec la référence.
+- [ ] Ouvrez le lien « Voir les instructions de paiement » d’un e-mail : le panneau de paiement s’affiche avec la référence et les numéros MVola et Orange Money.
 - [ ] Partagez l’adresse du site dans WhatsApp : l’aperçu (image et titre) s’affiche.
 - [ ] Supprimez la ligne de test dans le tableau.
 
